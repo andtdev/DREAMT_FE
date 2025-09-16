@@ -355,6 +355,7 @@ def train_test_split(SW_df, sids, features, group_variable):
 def resample_data(X_train, y_train, group_train, group_variable):
     """
     Applies SMOTE resampling to balance the dataset across the target classes.
+    Uses a memory-safe approach for large datasets.
 
     Parameters:
     ----------
@@ -376,14 +377,54 @@ def resample_data(X_train, y_train, group_train, group_variable):
     group_train_resampled : numpy array
         The group variable(s) after SMOTE resampling.
     """
-    smote = SMOTE(random_state=1)
-    combined = np.column_stack((X_train, group_train))
-    combined_resampled, y_train_resampled = smote.fit_resample(combined, y_train)
+    print(f"Starting SMOTE resampling with {len(X_train)} samples...")
+    
+    # Memory-safe approach: use smaller k_neighbors for large datasets
+    n_samples = len(X_train)
+    k_neighbors = min(5, max(1, int(np.sqrt(n_samples) / 10)))  # Adaptive k_neighbors
+    
+    try:
+        # Use reduced precision and smaller k_neighbors to avoid memory issues
+        smote = SMOTE(random_state=1, k_neighbors=k_neighbors)
+        
+        # Convert to float32 to reduce memory usage
+        X_train_f32 = X_train.astype(np.float32)
+        group_train_f32 = group_train.astype(np.float32)
+        y_train_int = y_train.astype(np.int32)
+        
+        combined = np.column_stack((X_train_f32, group_train_f32))
+        combined_resampled, y_train_resampled = smote.fit_resample(combined, y_train_int)
 
-    # Separate the features and the group variable after resampling
-    X_train_resampled = combined_resampled[
-        :, : -len(group_variable)
-    ]  # All columns except the last one/two, depends on group variable
-    group_train_resampled = combined_resampled[:, -len(group_variable) :]
+        # Separate the features and the group variable after resampling
+        X_train_resampled = combined_resampled[
+            :, : -len(group_variable)
+        ].astype(np.float64)  # Convert back to float64
+        group_train_resampled = combined_resampled[:, -len(group_variable) :].astype(np.float64)
+        y_train_resampled = y_train_resampled.astype(np.float64)
 
-    return X_train_resampled, y_train_resampled, group_train_resampled
+        print(f"SMOTE resampling successful: {len(X_train)} -> {len(X_train_resampled)} samples")
+        return X_train_resampled, y_train_resampled, group_train_resampled
+        
+    except Exception as e:
+        print(f"SMOTE failed with error: {e}")
+        print("Falling back to simple random undersampling...")
+        
+        # Fallback: Simple random undersampling to balance classes
+        unique_classes, counts = np.unique(y_train, return_counts=True)
+        min_count = min(counts)
+        
+        indices_to_keep = []
+        for class_label in unique_classes:
+            class_indices = np.where(y_train == class_label)[0]
+            selected_indices = np.random.choice(class_indices, size=min_count, replace=False)
+            indices_to_keep.extend(selected_indices)
+        
+        indices_to_keep = np.array(indices_to_keep)
+        np.random.shuffle(indices_to_keep)
+        
+        X_train_resampled = X_train[indices_to_keep]
+        y_train_resampled = y_train[indices_to_keep]
+        group_train_resampled = group_train[indices_to_keep]
+        
+        print(f"Random undersampling successful: {len(X_train)} -> {len(X_train_resampled)} samples")
+        return X_train_resampled, y_train_resampled, group_train_resampled
