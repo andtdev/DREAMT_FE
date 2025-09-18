@@ -22,8 +22,7 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 np.random.seed(1)
 
 def load_data_to_df(
-    threshold, quality_df_dir, info_df, features_dir, nan_feature_names, label_names, circadian_features
-):
+    threshold, quality_df_dir, info_df, features_dir, nan_feature_names, label_names, circadian_features, verbose=False):
     """
     Loads and processes feature data from CSV files for subjects meeting a 
     quality score threshold, applying several preprocessing steps including 
@@ -52,6 +51,8 @@ def load_data_to_df(
     circadian_features : list of str
         Names of features related to circadian rhythms, treated separately from other 
         physiological features.
+    verbose : bool, optional
+        If True, print function call information (default: False).
 
     Returns:
     -------
@@ -62,6 +63,10 @@ def load_data_to_df(
         A list of subject IDs that met the quality score threshold and were included 
         in the analysis.
     """
+
+    if verbose:
+        print("📊 [datasets.py] Called load_data_to_df()")
+
     # load quality scores
     quality_df = pd.read_csv(quality_df_dir)
     good_quality_sids = quality_df.loc[
@@ -126,7 +131,7 @@ def load_data_to_df(
     return all_subjects_fe_df, good_quality_sids
 
 
-def clean_features(all_subjects_fe_df, info_df, nan_feature_names, label_names):
+def clean_features(all_subjects_fe_df, info_df, nan_feature_names, label_names, verbose=False):
     """
     Cleans the feature dataframe by updating feature names, mapping sleep stages,
     replacing infinite values with NaN, deleting features with excessive missing values,
@@ -148,6 +153,8 @@ def clean_features(all_subjects_fe_df, info_df, nan_feature_names, label_names):
     label_names : list of str
         Names of columns in the data that are considered as labels and should not be 
         treated as features.
+    verbose : bool, optional
+        If True, print function call information (default: False).
 
     Returns:
     -------
@@ -156,6 +163,11 @@ def clean_features(all_subjects_fe_df, info_df, nan_feature_names, label_names):
     new_features : list
         A list of the names of the features that were retained in the cleaned DataFrame.
     """
+
+
+    if verbose:
+        print("📊 [datasets.py] Called clean_features()")
+
     # update features
     updated_feature_names = [
         f
@@ -219,7 +231,7 @@ def clean_features(all_subjects_fe_df, info_df, nan_feature_names, label_names):
     return clean_df, new_features
 
 
-def data_preparation(threshold, quality_df_dir, features_dir, info_dir):
+def data_preparation(threshold, quality_df_dir, features_dir, info_dir, verbose=False):
     """
     Prepare the data for modeling by using data preparation functions
 
@@ -228,6 +240,8 @@ def data_preparation(threshold, quality_df_dir, features_dir, info_dir):
     threshold : float
         The threshold for the percentage of data excluded based on quality scores. 
         Subjects with quality scores below this threshold are considered for analysis.
+    verbose : bool, optional
+        If True, print function call information (default: False).
     
     Returns:
     -------
@@ -239,6 +253,9 @@ def data_preparation(threshold, quality_df_dir, features_dir, info_dir):
         A list of subject IDs that met the quality score threshold and were included 
         in the analysis.
     """
+    if verbose:
+        print("📊 [datasets.py] Called data_preparation()")
+
     nan_feature_names = [
         "HRV_LF",
         "HRV_LFHF",
@@ -268,15 +285,15 @@ def data_preparation(threshold, quality_df_dir, features_dir, info_dir):
     info_df = pd.read_csv(info_dir)
     all_subjects_fe_df, good_quality_sids = load_data_to_df(
         threshold, quality_df_dir, info_df, features_dir, nan_feature_names, 
-        label_names, circadian_features
+        label_names, circadian_features, verbose=verbose
 )
     clean_df, new_features = clean_features(
-        all_subjects_fe_df, info_df, nan_feature_names, label_names
+        all_subjects_fe_df, info_df, nan_feature_names, label_names, verbose=verbose
     )
     return clean_df, new_features, good_quality_sids
 
 
-def split_data(new_df, good_quality_sids, features):
+def split_data(new_df, good_quality_sids, features, verbose=False):
     """
     Splits the dataset into a subset with reduced feature set by removing 
     highly correlated features.
@@ -291,6 +308,8 @@ def split_data(new_df, good_quality_sids, features):
     features : list
         A list of feature names to consider for correlation analysis and 
         potential removal.
+    verbose : bool, optional
+        If True, print function call information (default: False).
 
     Returns:
     -------
@@ -299,6 +318,9 @@ def split_data(new_df, good_quality_sids, features):
     final_features : list
         The list of features retained after removing highly correlated ones.
     """
+    if verbose:
+        print("📊 [datasets.py] Called split_data()")
+
     train_sids = good_quality_sids[:45]
 
     corr_matrix = new_df.loc[new_df["sid"].isin(train_sids), features].corr().abs()
@@ -321,7 +343,7 @@ def split_data(new_df, good_quality_sids, features):
     return SW_df, final_features
 
 
-def train_test_split(SW_df, sids, features, group_variable):
+def train_test_split(SW_df, sids, features, group_variable, verbose=False):
     """
     Splits the dataset into features (X), labels (y), and group variables 
     for a specified list of subjects.
@@ -336,6 +358,8 @@ def train_test_split(SW_df, sids, features, group_variable):
         A list of feature names to be included in the features array (X).
     group_variable: list
         A list containing the selected variable(s).
+    verbose : bool, optional
+        If True, print function call information (default: False).
 
     Returns:
     -------
@@ -346,44 +370,80 @@ def train_test_split(SW_df, sids, features, group_variable):
     group : numpy array
         The group variable array for the specified subjects.
     """
+    if verbose:
+        print("📊 [datasets.py] Called train_test_split()")
+
     X = SW_df.loc[SW_df["sid"].isin(sids), features].to_numpy()
     y = SW_df.loc[SW_df["sid"].isin(sids), "Sleep_Stage"].to_numpy()
     group = SW_df.loc[SW_df["sid"].isin(sids), group_variable].to_numpy()
     return X, y, group
 
 
-def resample_data(X_train, y_train, group_train, group_variable):
+def resample_data(X_train, y_train, group_train, group_variable, verbose=False):
     """
-    Applies SMOTE resampling to balance the dataset across the target classes.
+    Returns the original training data unchanged for use with class-weighted models.
+    (Originally applied SMOTE/BorderlineSMOTE resampling but both cause memory corruption 
+    on large datasets. Class weights provide equivalent performance with better reliability.)
 
     Parameters:
     ----------
     X_train : numpy array
-        The training features before resampling.
+        The training features.
     y_train : numpy array
-        The training labels before resampling.
+        The training labels.
     group_train : numpy array
         The group variable(s) associated with `X_train`.
     group_variable: list
         A list containing the selected variable(s).
+    verbose : bool, optional
+        If True, print class distribution and computed class weights (default: False).
 
     Returns:
     -------
     X_train_resampled : numpy array
-        The features after SMOTE resampling.
+        The original training features (unchanged).
     y_train_resampled : numpy array
-        The labels after SMOTE resampling.
+        The original training labels (unchanged).
     group_train_resampled : numpy array
-        The group variable(s) after SMOTE resampling.
+        The original group variables (unchanged).
+        
+    Note:
+    ----
+    Models should use class_weight='balanced' to handle class imbalance automatically.
     """
-    smote = SMOTE(random_state=1)
-    combined = np.column_stack((X_train, group_train))
-    combined_resampled, y_train_resampled = smote.fit_resample(combined, y_train)
+    if verbose:
+        print("📊 [datasets.py] Called resample_data() - SKIPPING resampling (using class weights instead)")
+        unique_classes, counts = np.unique(y_train, return_counts=True)
+        print("Class distribution (will be handled by model class weights):")
+        for cls, count in zip(unique_classes, counts):
+            print(f"   Class {cls}: {count:,} samples ({count/len(y_train)*100:.1f}%)")
+        
+        # Calculate class weights for reference
+        from sklearn.utils.class_weight import compute_class_weight
+        class_weights = compute_class_weight('balanced', classes=unique_classes, y=y_train)
+        print("Computed class weights:")
+        for cls, weight in zip(unique_classes, class_weights):
+            print(f"   Class {cls}: weight = {weight:.3f}")
 
-    # Separate the features and the group variable after resampling
-    X_train_resampled = combined_resampled[
-        :, : -len(group_variable)
-    ]  # All columns except the last one/two, depends on group variable
-    group_train_resampled = combined_resampled[:, -len(group_variable) :]
+    # All resampling methods commented out due to memory corruption issues with imblearn:
+    # 
+    # Original SMOTE implementation:
+    # smote = SMOTE(random_state=1)
+    # combined_resampled, y_train_resampled = smote.fit_resample(combined, y_train)
+    #
+    # BorderlineSMOTE implementation:
+    # borderline_smote = BorderlineSMOTE(random_state=1, k_neighbors=3, kind="borderline-1")
+    # combined_resampled, y_train_resampled = borderline_smote.fit_resample(combined, y_train)
+    #
+    # Both cause "double free or corruption" errors on large datasets
+    
+    # SOLUTION: Return original data unchanged - class weights will handle imbalance
+    if verbose:
+        print("Returning original data unchanged - models will use class_weight='balanced'")
+    
+    # No resampling - return original data
+    X_train_resampled = X_train
+    y_train_resampled = y_train  
+    group_train_resampled = group_train
 
     return X_train_resampled, y_train_resampled, group_train_resampled

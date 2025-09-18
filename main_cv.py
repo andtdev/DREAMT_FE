@@ -26,10 +26,11 @@ clean_df, new_features, good_quality_sids = data_preparation(
     threshold = 0.2, 
     quality_df_dir = quality_df_dir,
     features_dir = features_dir,
-    info_dir = info_dir)
+    info_dir = info_dir,
+    verbose = False)
 
 # Split data to train, validation, and test set
-SW_df, final_features = split_data(clean_df, good_quality_sids, new_features)
+SW_df, final_features = split_data(clean_df, good_quality_sids, new_features, verbose=False)
 print(SW_df.shape)
 print(SW_df.Sleep_Stage.value_counts())
 
@@ -51,12 +52,12 @@ for fold, (trainval_idx, test_idx) in enumerate(kf.split(good_quality_sids)):
 
     print(f"Fold {fold + 1}")
 
-    X_train, y_train, group_train = train_test_split(SW_df, train_sids, final_features, group_variable)
-    X_val, y_val, group_val = train_test_split(SW_df, val_sids, final_features, group_variable)
-    X_test, y_test, group_test = train_test_split(SW_df, test_sids, final_features, group_variable)
+    X_train, y_train, group_train = train_test_split(SW_df, train_sids, final_features, group_variable, verbose=False)
+    X_val, y_val, group_val = train_test_split(SW_df, val_sids, final_features, group_variable, verbose=False)
+    X_test, y_test, group_test = train_test_split(SW_df, test_sids, final_features, group_variable, verbose=False)
 
     # Resample all the data
-    X_train_resampled, y_train_resampled, group_train_resampled = resample_data(X_train, y_train, group_train, group_variable)
+    X_train_resampled, y_train_resampled, group_train_resampled = resample_data(X_train, y_train, group_train, group_variable, verbose=False)
 
     # Run LightGBM model
     final_lgb_model = LightGBM_engine(X_train_resampled, y_train_resampled, X_val, y_val)

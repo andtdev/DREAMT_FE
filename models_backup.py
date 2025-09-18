@@ -79,7 +79,7 @@ class LSTMPModel(nn.Module):
         return output
 
 
-def LightGBM_engine(X_train_resampled, y_train_resampled, X_val, y_val, verbose=False):
+def LightGBM_engine(X_train_resampled, y_train_resampled, X_val, y_val):
     """Train a LightGBM model using hyperparameter optimization.
     
     Parameters
@@ -92,15 +92,11 @@ def LightGBM_engine(X_train_resampled, y_train_resampled, X_val, y_val, verbose=
         Validation data for early stopping.
     y_val : array-like
         Validation labels for early stopping.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     final_lgb_model : LightGBM model
     """
-    if verbose:
-        print("🚀 [models.py] Called LightGBM_engine()")
     space = {
         "max_depth": hp.quniform("max_depth", 2, 6, 1),
         "reg_alpha": hp.quniform("reg_alpha", 0, 180, 2),
@@ -113,9 +109,8 @@ def LightGBM_engine(X_train_resampled, y_train_resampled, X_val, y_val, verbose=
     def objective(space):
         clf = lgb.LGBMClassifier(
             objective="binary",
-            class_weight='balanced',  # Automatically handle class imbalance
             #is_unbalance=True,
-            #scale_pos_weight=1.5,  # Replaced with class_weight='balanced'
+            scale_pos_weight=1.5,
             max_depth=int(space["max_depth"]),
             reg_alpha=space["reg_alpha"],
             reg_lambda=space["reg_lambda"],
@@ -146,10 +141,7 @@ def LightGBM_engine(X_train_resampled, y_train_resampled, X_val, y_val, verbose=
     lgb_best_hyperparams["num_leaves"] = int(lgb_best_hyperparams["num_leaves"])
 
     final_lgb_model = lgb.LGBMClassifier(
-        **lgb_best_hyperparams, 
-        class_weight='balanced',  # Ensure class balancing in final model
-        random_state=1, 
-        num_iterations=50
+        **lgb_best_hyperparams, random_state=1, num_iterations=50
     )
 
     final_lgb_model.fit(X_train_resampled, y_train_resampled)
@@ -179,7 +171,7 @@ def LightGBM_predict(final_lgb_model, X_test, y_test):
     return results_df
 
 
-def LightGBM_result(final_lgb_model, X_test, y_test, prob_ls_test, true_ls_test, save_plots=False):
+def LightGBM_result(final_lgb_model, X_test, y_test, prob_ls_test, true_ls_test):
     """Calculate evaluation metrics and plot confusion matrix for a trained LightGBM model.
     
     Parameters
@@ -194,8 +186,6 @@ def LightGBM_result(final_lgb_model, X_test, y_test, prob_ls_test, true_ls_test,
         Predicted probabilities from LightGBM model without post-processing.
     true_ls : array-like
         True labels.
-    save_plots : bool, optional
-        Whether to save plots to file. Default is False.
 
     Returns
     -------
@@ -205,13 +195,13 @@ def LightGBM_result(final_lgb_model, X_test, y_test, prob_ls_test, true_ls_test,
     kappa = calculate_kappa(prob_ls_test, true_ls_test)
     results_df = LightGBM_predict(final_lgb_model, X_test, y_test)
     results_df["Cohen's Kappa"] = kappa
-    plot_cm(prob_ls_test, true_ls_test, "LightGBM", save_plot=save_plots)
+    plot_cm(prob_ls_test, true_ls_test, "LightGBM")
 
     return results_df
 
 
 def GPBoost_engine(
-    X_train_resampled, group_train_resampled, y_train_resampled, X_val, y_val, group_val, verbose=False
+    X_train_resampled, group_train_resampled, y_train_resampled, X_val, y_val, group_val
 ):
 
     """Train a GPBoost model using hyperparameter optimization.
@@ -230,16 +220,12 @@ def GPBoost_engine(
         Validation labels for early stopping.
     group_val : array-like
         Group data for validation.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     final_gpb_model : GPBoost model
         the trained GPBoost model
     """
-    if verbose:
-        print("🚀 [models.py] Called GPBoost_engine()")
     space = {
         "max_depth": hp.quniform("max_depth", 3, 6, 1),
         "learning_rate": hp.uniform("learning_rate", 0.005, 0.01),
@@ -358,7 +344,7 @@ def GPBoost_predict(final_gpb_model, X_test, y_test, group_test):
     return gpb_train_results_df
 
 
-def GPBoost_result(final_gpb_model, X_test, y_test, group, prob_ls_test, true_ls_test, save_plots=False):
+def GPBoost_result(final_gpb_model, X_test, y_test, group, prob_ls_test, true_ls_test):
     """Calculate evaluation metrics and plot confusion matrix for a trained GPBoost model.
     
     Parameters
@@ -375,8 +361,6 @@ def GPBoost_result(final_gpb_model, X_test, y_test, group, prob_ls_test, true_ls
         Predicted probabilities from GPBoost model without post-processing.
     true_ls_test : array-like
         True labels in time series.
-    save_plots : bool, optional
-        Whether to save plots to file. Default is False.
 
     Returns
     -------
@@ -386,7 +370,7 @@ def GPBoost_result(final_gpb_model, X_test, y_test, group, prob_ls_test, true_ls
     kappa = calculate_kappa(prob_ls_test, true_ls_test)
     results_df = GPBoost_predict(final_gpb_model, X_test, y_test, group)
     results_df["Cohen's Kappa"] = kappa
-    plot_cm(prob_ls_test, true_ls_test, "GPBoost", save_plot=save_plots)
+    plot_cm(prob_ls_test, true_ls_test, "GPBoost")
 
     return results_df
 
@@ -415,7 +399,7 @@ def LSTM_dataloader(list_probabilities_subject, lengths, list_true_stages, batch
     return dataloader
 
 
-def LSTM_engine(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate = 0.001, verbose=False):
+def LSTM_engine(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate = 0.001):
     """
     Train a LSTM model using a DataLoader.
     
@@ -425,16 +409,12 @@ def LSTM_engine(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate
         DataLoader for the training data.
     num_epoch : int
         Number of epochs to train the model.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     model : BiLSTMPModel
         Trained LSTM model.
     """
-    if verbose:
-        print("🚀 [models.py] Called LSTM_engine()")
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(f"Training on {device}")
 
@@ -488,7 +468,7 @@ def LSTM_engine(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate
     return model
 
 
-def LSTM_eval(lstm_model, dataloader_test, list_true_stages_test, test_name, save_plots=False):
+def LSTM_eval(lstm_model, dataloader_test, list_true_stages_test, test_name):
     """
     Evaluate a LSTM model using a DataLoader.
     
@@ -500,10 +480,6 @@ def LSTM_eval(lstm_model, dataloader_test, list_true_stages_test, test_name, sav
         DataLoader for the test data.
     list_true_stages_test : list
         List of true labels for the test data.
-    test_name : str
-        Name of the test/model for labeling.
-    save_plots : bool, optional
-        Whether to save plots to file. Default is False.
 
     Returns
     -------
@@ -541,6 +517,6 @@ def LSTM_eval(lstm_model, dataloader_test, list_true_stages_test, test_name, sav
 
     lstm_test_results_df = calculate_metrics(array_true, array_predict, test_name)
     lstm_test_results_df["Cohen's Kappa"] = np.average(kappa)
-    plot_cm(array_predict, list_true_stages_test, test_name, save_plot=save_plots)
+    plot_cm(array_predict, list_true_stages_test, test_name)
 
     return lstm_test_results_df

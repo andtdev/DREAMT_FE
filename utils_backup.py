@@ -17,23 +17,19 @@ from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
 
 
-def missingness_imputation(data, verbose=False):
+def missingness_imputation(data):
     """Perform missingness imputation on the given data.
 
     Parameters
     ----------
     data : array-like
         The data to be imputed.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     interpolated_series : pandas Series
         The imputed data.
     """
-    if verbose:
-        print("🔧 [utils.py] Called missingness_imputation()")
 
     indices = np.arange(len(data))
     series = pd.Series(data, index=indices)
@@ -41,7 +37,7 @@ def missingness_imputation(data, verbose=False):
     return interpolated_series
 
 
-def half_gaussian_kernel(size, std_dev, verbose=False):
+def half_gaussian_kernel(size, std_dev):
     """Create a half Gaussian kernel.
 
     Parameters
@@ -50,23 +46,19 @@ def half_gaussian_kernel(size, std_dev, verbose=False):
         The size of the kernel.
     std_dev : float
         The standard deviation of the kernel.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     half_kernel : array
         The half Gaussian kernel.
     """
-    if verbose:
-        print("🔧 [utils.py] Called half_gaussian_kernel()")
     full_kernel = gaussian(size, std_dev)
     half_kernel = full_kernel[: size // 2]
     half_kernel /= half_kernel.sum()
     return half_kernel
 
 
-def apply_half_gaussian_filter(data, kernel_size, std_dev, verbose=False):
+def apply_half_gaussian_filter(data, kernel_size, std_dev):
     """Apply a half Gaussian filter to the given data.
 
     Parameters
@@ -77,16 +69,12 @@ def apply_half_gaussian_filter(data, kernel_size, std_dev, verbose=False):
         The size of the kernel.
     std_dev : float
         The standard deviation of the kernel.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     filtered_data : array
         The filtered data.
     """
-    if verbose:
-        print("🔧 [utils.py] Called apply_half_gaussian_filter()")
     kernel = half_gaussian_kernel(kernel_size, std_dev)
     filtered_data = convolve(data, kernel, mode="valid")
     left_padding_length = kernel_size // 2 - 1
@@ -96,7 +84,7 @@ def apply_half_gaussian_filter(data, kernel_size, std_dev, verbose=False):
     return filtered_data
 
 
-def half_gaussian_filtering(df, columns, kernel_size=40, std_dev=100, verbose=False):
+def half_gaussian_filtering(df, columns, kernel_size=40, std_dev=100):
     """Perform half Gaussian filtering on the given DataFrame.
 
     Parameters
@@ -109,16 +97,12 @@ def half_gaussian_filtering(df, columns, kernel_size=40, std_dev=100, verbose=Fa
         The size of the kernel.
     std_dev : float
         The standard deviation of the kernel.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     df : pandas DataFrame
         The filtered DataFrame.
     """
-    if verbose:
-        print("🔧 [utils.py] Called half_gaussian_filtering()")
     for column in columns:
         interpolated_series = missingness_imputation(
             apply_half_gaussian_filter(df[column], kernel_size, std_dev)
@@ -150,7 +134,7 @@ def apply_gaussian_filter(data, kernel_size, std_dev):
     return filtered_data
 
 
-def gaussian_filtering(df, columns, kernel_size=40, std_dev=100, verbose=False):
+def gaussian_filtering(df, columns, kernel_size=40, std_dev=100):
     """Perform Gaussian filtering on the given DataFrame.
 
     Parameters
@@ -163,16 +147,12 @@ def gaussian_filtering(df, columns, kernel_size=40, std_dev=100, verbose=False):
         The size of the kernel.
     std_dev : float
         The standard deviation of the kernel.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     df : pandas DataFrame
         The filtered DataFrame.
     """
-    if verbose:
-        print("🔧 [utils.py] Called gaussian_filtering()")
     for column in columns:
         interpolated_series = missingness_imputation(
             apply_gaussian_filter(df[column], kernel_size, std_dev)
@@ -182,7 +162,7 @@ def gaussian_filtering(df, columns, kernel_size=40, std_dev=100, verbose=False):
     return df
 
 
-def rolling_stds(df, columns, window_size=20, verbose=False):
+def rolling_stds(df, columns, window_size=20):
     """Calculate rolling standard deviations for the given columns in the DataFrame.
 
     Parameters
@@ -193,16 +173,12 @@ def rolling_stds(df, columns, window_size=20, verbose=False):
         The columns for which to calculate rolling standard deviations.
     window_size : int
         The size of the rolling window.
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns
     -------
     df : pandas DataFrame
         The DataFrame with the rolling standard deviations added.
     """
-    if verbose:
-        print("🔧 [utils.py] Called rolling_stds()")
     for column in columns:
         df["rolling_var_{}".format(column)] = (
             df[column].rolling(window=window_size, min_periods=1).var()
@@ -320,7 +296,7 @@ def get_variable(group_variables, idx):
     return group_variable
 
 
-def compute_probabilities(list_sids, df, features_list, model_name, final_model, group_variable, verbose=False):
+def compute_probabilities(list_sids, df, features_list, model_name, final_model, group_variable):
     """
     Computes the probabilities based on the final features, using a given model. 
 
@@ -338,8 +314,6 @@ def compute_probabilities(list_sids, df, features_list, model_name, final_model,
         The trained model object to use for predictions.
     group_variable: list
         A list containing the selected variable(s).
-    verbose : bool, optional
-        If True, print function call information (default: False).
 
     Returns:
     ----------
@@ -350,8 +324,6 @@ def compute_probabilities(list_sids, df, features_list, model_name, final_model,
     list_true_stages : list
         A list of the true sleep stages for each subject.
     """
-    if verbose:
-        print("🔧 [utils.py] Called compute_probabilities()")
     list_probabilities_subject = []
     list_true_stages = []
     lengths = []
@@ -561,7 +533,7 @@ def calculate_kappa(list_probabilities_subject, list_true_stages):
     return avg_cp
 
 
-def plot_cm(list_probabilities_subject, list_true_stages, model_name, save_plot=False):
+def plot_cm(list_probabilities_subject, list_true_stages, model_name):
     """
     Plot the confusion matrix of a model's prediction.
 
@@ -572,9 +544,7 @@ def plot_cm(list_probabilities_subject, list_true_stages, model_name, save_plot=
     list_true_stages : list
         A list of the true sleep stages for each subject.
     model_name : str
-        The name of the model to be shown on the plot.
-    save_plot : bool, optional
-        Whether to save the plot to file. Default is False.
+        The name of the model to be shown on the plot. 
 
     Returns:
     ----------
@@ -610,14 +580,6 @@ def plot_cm(list_probabilities_subject, list_true_stages, model_name, save_plot=
     plt.title(title)
     plt.xlabel("Predicted Label")
     plt.ylabel("True Label")
-    
-    if save_plot:
-        import os
-        os.makedirs('./new_results', exist_ok=True)  # Create directory if it doesn't exist
-        filename = f'./new_results/{model_name}_confusion_matrix.png'
-        plt.savefig(filename, dpi=300, bbox_inches='tight')
-        print(f"Confusion matrix saved to: {filename}")
-    
     plt.show()
 
 
