@@ -187,34 +187,56 @@ def rolling_stds(df, columns, window_size=20):
 
 
 class FocalLoss(nn.Module):
-    """Focal loss class based on torch module.
+    """Multiclass Focal Loss for handling extreme class imbalance.
+    
+    Focal loss applies a modulating term to the cross entropy loss to focus 
+    learning on hard misclassified examples.
 
     Parameters
     ----------
-    alpha : float, optional
-        The alpha parameter, by default 0.25
+    alpha : torch.Tensor or None, optional
+        Class weights, shape (num_classes,). If None, all classes weighted equally.
     gamma : float, optional
-        The gamma parameter, by default 2.0
+        Focusing parameter for modulating loss, by default 2.0
+        Higher gamma = more focus on hard examples
     reduction : str, optional
         The reduction method, by default "mean"
     """
-    def __init__(self, alpha=0.25, gamma=2.0, reduction="mean"):
+    def __init__(self, alpha=None, gamma=2.0, reduction="mean"):
         super(FocalLoss, self).__init__()
         self.alpha = alpha
         self.gamma = gamma
         self.reduction = reduction
 
     def forward(self, inputs, targets):
-        BCE_loss = F.binary_cross_entropy_with_logits(inputs, targets, reduction="none")
-        pt = torch.exp(-BCE_loss)
-        F_loss = self.alpha * (1 - pt) ** self.gamma * BCE_loss
+        """
+        Parameters
+        ----------
+        inputs : torch.Tensor
+            Predicted logits, shape (batch_size, num_classes) or (batch_size, seq_len, num_classes)
+        targets : torch.Tensor
+            Ground truth labels, shape (batch_size,) or (batch_size, seq_len)
+        """
+        # Compute softmax probabilities
+        ce_loss = F.cross_entropy(inputs, targets, reduction='none')
+        p = torch.exp(-ce_loss)
+        
+        # Compute focal loss
+        focal_loss = (1 - p) ** self.gamma * ce_loss
+        
+        # Apply class weights if provided
+        if self.alpha is not None:
+            if self.alpha.device != inputs.device:
+                self.alpha = self.alpha.to(inputs.device)
+            alpha_t = self.alpha[targets]
+            focal_loss = alpha_t * focal_loss
 
         if self.reduction == "mean":
-            return torch.mean(F_loss)
+            return torch.mean(focal_loss)
         elif self.reduction == "sum":
-            return torch.sum(F_loss)
+            return torch.sum(focal_loss)
         else:
-            return F_loss
+            return focal_loss
 
 
 class NanStandardScaler(TransformerMixin):
@@ -344,8 +366,11 @@ def compute_probabilities(list_sids, df, features_list, model_name, final_model,
             pred_proba = final_model.predict_proba(x)
 
             sid_df["predicted_Sleep_Stage"] = np.argmax(pred_proba, axis=1)
-            sid_df["predicted_Sleep_Stage_Proba_Class_0"] = pred_proba[:, 0]
-            sid_df["predicted_Sleep_Stage_Proba_Class_1"] = pred_proba[:, 1]
+            sid_df["predicted_Sleep_Stage_Proba_Class_0"] = pred_proba[:, 0]  # W
+            sid_df["predicted_Sleep_Stage_Proba_Class_1"] = pred_proba[:, 1]  # R
+            sid_df["predicted_Sleep_Stage_Proba_Class_2"] = pred_proba[:, 2]  # N1
+            sid_df["predicted_Sleep_Stage_Proba_Class_3"] = pred_proba[:, 3]  # N2
+            sid_df["predicted_Sleep_Stage_Proba_Class_4"] = pred_proba[:, 4]  # N3
 
         elif model_name == 'gpb':
             pred_resp = final_model.predict(
@@ -364,8 +389,11 @@ def compute_probabilities(list_sids, df, features_list, model_name, final_model,
         probabilities_subject = sid_df.loc[
             :,
             [
-                "predicted_Sleep_Stage_Proba_Class_0",
-                "predicted_Sleep_Stage_Proba_Class_1",
+                "predicted_Sleep_Stage_Proba_Class_0",  # W
+                "predicted_Sleep_Stage_Proba_Class_1",  # R
+                "predicted_Sleep_Stage_Proba_Class_2",  # N1
+                "predicted_Sleep_Stage_Proba_Class_3",  # N2
+                "predicted_Sleep_Stage_Proba_Class_4",  # N3
                 "ACC_INDEX",
                 "HRV_HFD",
             ],
@@ -438,14 +466,14 @@ def calculate_accuracy(y_pred, y_true):
 def calculate_metrics(y_test, y_pred_proba, model_name):
     """
     Calculates the classification metrics based on the true labels and 
-    predicted probabilities.
+    predicted probabilities. Handles multiclass classification.
 
     Parameters:
     ----------
     y_test : array
         True labels for the test data.
     y_pred_proba : array
-        Predicted probabilities for each class
+        Predicted probabilities for each class (shape: n_samples x n_classes)
     model_name: str
         Name of the model to be shown on the results.
 
@@ -453,8 +481,7 @@ def calculate_metrics(y_test, y_pred_proba, model_name):
     ----------
     result_df : pandas dataframe
         A DataFrame containing the calculated metrics for the given model.
-        columns: Model, Precision, Recall, F1 Score, Specificity, AUROC, AUPRC,
-                 accuracy
+        columns: Model, Precision, Recall, F1 Score, AUROC, Accuracy
     """
     results = []
 
@@ -462,35 +489,21 @@ def calculate_metrics(y_test, y_pred_proba, model_name):
 
     accuracy = accuracy_score(y_test, predicted_labels)
 
-    cm = confusion_matrix(y_test, predicted_labels)
-    true_negatives = cm.sum() - (
-        cm[1, :].sum()
-        + cm[:, 1].sum()
-        - cm[1, 1]
-    )
-    false_positives = cm[:, 1].sum() - cm[1, 1]
-    specificity = true_negatives / (true_negatives + false_positives)
+    # For multiclass: use weighted average for precision, recall, F1
+    precision = precision_score(y_test, predicted_labels, average='weighted', zero_division=0)
+    recall = recall_score(y_test, predicted_labels, average='weighted', zero_division=0)
+    f1 = f1_score(y_test, predicted_labels, average='weighted', zero_division=0)
 
-    precision = precision_score(
-        y_test,
-        predicted_labels,
-        labels=[1],
-    )
-    recall = recall_score(
-        y_test,
-        predicted_labels,
-        labels=[1],
-    )  # Recall is the same as sensitivity
-    f1 = f1_score(
-        y_test,
-        predicted_labels,
-        labels=[1],
-    )
-
-    # Compute AUROC
-    auroc = roc_auc_score(y_test, y_pred_proba[:, 1])
-    precisions, recalls, thresholds = precision_recall_curve(y_test, y_pred_proba[:,1])
-    precision_recall_auc = auc(recalls, precisions)
+    # Compute AUROC for multiclass (one-vs-rest approach)
+    try:
+        from sklearn.preprocessing import label_binarize
+        n_classes = y_pred_proba.shape[1]
+        y_test_binarized = label_binarize(y_test, classes=range(n_classes))
+        
+        # Compute macro-average AUROC
+        auroc = roc_auc_score(y_test_binarized, y_pred_proba, average='weighted', multi_class='ovr')
+    except:
+        auroc = np.nan
 
     results.append(
         {
@@ -498,9 +511,7 @@ def calculate_metrics(y_test, y_pred_proba, model_name):
             "Precision": precision,
             "Recall": recall,
             "F1 Score": f1,
-            "Specificity": specificity,
             "AUROC": auroc,
-            'AUPRC': precision_recall_auc,
             "Accuracy": accuracy
         }
     )
@@ -528,7 +539,8 @@ def calculate_kappa(list_probabilities_subject, list_true_stages):
     """
     cp = []
     for i, probabilities in enumerate(list_probabilities_subject):
-        cp.append(cohen_kappa_score(list_true_stages[i], np.argmax(probabilities[:, :2], axis=1)))
+        # For multiclass (5 classes), use all probability columns
+        cp.append(cohen_kappa_score(list_true_stages[i], np.argmax(probabilities[:, :5], axis=1)))
     avg_cp = np.average(cp)
     return avg_cp
 
@@ -557,17 +569,17 @@ def plot_cm(list_probabilities_subject, list_true_stages, model_name):
     else:
         y_pred = np.concatenate(
             [
-                np.argmax(probabilities[:, :2], axis=1)
+                np.argmax(probabilities[:, :5], axis=1)  # Changed to 5 classes
                 for probabilities in list_probabilities_subject
             ]
         )
     cm = confusion_matrix(y_test, y_pred)
-    class_names = ["Sleep", "Wake"]
+    class_names = ["W", "R", "N1", "N2", "N3"]  # 5 sleep stages
     cm_percent = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
     print(cm)
 
-    # Plotting
-    plt.figure(figsize=(4, 3))
+    # Plotting - larger figure for 5x5 matrix
+    plt.figure(figsize=(8, 6))
     sns.heatmap(
         cm_percent,
         annot=True,

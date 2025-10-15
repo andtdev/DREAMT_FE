@@ -169,17 +169,8 @@ def clean_features(all_subjects_fe_df, info_df, nan_feature_names, label_names):
         updated_feature_names + label_names + ["sid"],
     ]
 
-    df.Sleep_Stage = df.Sleep_Stage.map(
-        {
-            "N1": "N",
-            "N2": "N",
-            "W": "W",
-            "N3": "N",
-            "P": "P",
-            "R": "R",
-            "Missing": "Missing",
-        }
-    )
+    # Keep all 5 sleep stages separate for multiclass classification
+    # No collapsing needed - keep W, R, N1, N2, N3 as-is
     # replace inf
     df = df.replace([np.inf, -np.inf], np.nan)
 
@@ -197,7 +188,9 @@ def clean_features(all_subjects_fe_df, info_df, nan_feature_names, label_names):
     # add BMI information
     df = pd.merge(df, info_df.loc[:, ["BMI"]], left_on="sid", right_index=True)
 
-    map_stage_to_num = {"P": 1, "N": 0, "R": 0, "W": 1, "Missing": np.nan}
+    # Map sleep stages to numeric labels for multiclass classification
+    # W=0, R=1, N1=2, N2=3, N3=4
+    map_stage_to_num = {"W": 0, "R": 1, "N1": 2, "N2": 3, "N3": 4, "P": np.nan, "Missing": np.nan}
     df["Sleep_Stage"] = df["Sleep_Stage"].map(map_stage_to_num)
     clean_df = df.dropna()
 
@@ -354,14 +347,18 @@ def train_test_split(SW_df, sids, features, group_variable):
 
 def resample_data(X_train, y_train, group_train, group_variable):
     """
-    Applies SMOTE resampling to balance the dataset across the target classes.
+    NO RESAMPLING - Returns original data unchanged.
+    
+    Class imbalance is now handled by class_weight='balanced' in LightGBM
+    and weighted loss in LSTM. SMOTE was creating unrealistic synthetic samples
+    that caused severe overfitting with extreme class imbalance.
 
     Parameters:
     ----------
     X_train : numpy array
-        The training features before resampling.
+        The training features.
     y_train : numpy array
-        The training labels before resampling.
+        The training labels.
     group_train : numpy array
         The group variable(s) associated with `X_train`.
     group_variable: list
@@ -370,20 +367,12 @@ def resample_data(X_train, y_train, group_train, group_variable):
     Returns:
     -------
     X_train_resampled : numpy array
-        The features after SMOTE resampling.
+        Same as input X_train (no resampling).
     y_train_resampled : numpy array
-        The labels after SMOTE resampling.
+        Same as input y_train (no resampling).
     group_train_resampled : numpy array
-        The group variable(s) after SMOTE resampling.
+        Same as input group_train (no resampling).
     """
-    smote = SMOTE(random_state=1)
-    combined = np.column_stack((X_train, group_train))
-    combined_resampled, y_train_resampled = smote.fit_resample(combined, y_train)
-
-    # Separate the features and the group variable after resampling
-    X_train_resampled = combined_resampled[
-        :, : -len(group_variable)
-    ]  # All columns except the last one/two, depends on group variable
-    group_train_resampled = combined_resampled[:, -len(group_variable) :]
-
-    return X_train_resampled, y_train_resampled, group_train_resampled
+    # Return original data without any resampling
+    # Class imbalance handled by class weights instead
+    return X_train, y_train, group_train
