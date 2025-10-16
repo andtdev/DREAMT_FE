@@ -1,0 +1,49 @@
+================================================================================
+DIRECT MULTICLASS SLEEP STAGE CLASSIFICATION METHOD
+================================================================================
+
+Timestamp: 2025-10-15 18:09:20
+
+METHOD DESCRIPTION:
+--------------------------------------------------------------------------------
+Single multiclass LightGBM classifier for all 5 sleep stages:
+  - Wake (0)
+  - REM (1)
+  - N1 (2)
+  - N2 (3)
+  - N3 (4)
+
+DATA PREPROCESSING:
+  - Focal Class Weighting: Enabled (gamma=1.2)
+  - Class Weight Formula: (total_samples / class_count) ^ gamma
+  - Hyperparameter Optimization: 150 trials
+  - Early Stopping: 20 rounds patience
+  - Memory Efficient: No data resampling required
+
+ADVANTAGES OVER HIERARCHICAL:
+  - No error cascading between levels
+  - All classes learned simultaneously with shared features
+  - Simpler architecture with fewer hyperparameters
+  - More robust and reliable
+  - Better generalization
+
+================================================================================
+BEST HYPERPARAMETERS
+================================================================================
+{
+  "colsample_bytree": 0.8729414298029194,
+  "learning_rate": 0.08602087964716362,
+  "max_depth": 6,
+  "min_child_samples": 60,
+  "min_data_in_leaf": 70,
+  "n_estimators": 225,
+  "num_leaves": 55,
+  "reg_alpha": 40.0,
+  "reg_lambda": 3.575599456428816,
+  "subsample": 0.7896170312565034
+}
+
+================================================================================
+FEATURE INFORMATION
+================================================================================
+Number of features: 366

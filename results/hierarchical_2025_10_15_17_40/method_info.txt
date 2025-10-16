@@ -1,0 +1,82 @@
+================================================================================
+HIERARCHICAL SLEEP STAGE CLASSIFICATION METHOD
+================================================================================
+
+Timestamp: 2025-10-15 17:46:02
+
+METHOD DESCRIPTION:
+--------------------------------------------------------------------------------
+Three-level hierarchical classification using LightGBM:
+  Level 1: Wake (0) vs All Sleep Stages (1,2,3,4)
+  Level 2: REM (1) vs Non-REM (2,3,4) [within sleep]
+  Level 3: N1 (2) vs N2 (3) vs N3 (4) [within non-REM]
+
+DATA PREPROCESSING:
+  - Focal Class Weighting: Enabled (gamma=1.5)
+  - Class Weight Formula: (total_samples / class_count) ^ gamma
+  - Hyperparameter Optimization: 100 trials per level
+  - Early Stopping: 20 rounds patience
+  - Memory Efficient: No data resampling required
+
+ADVANTAGES:
+  - Handles class imbalance at each level separately
+  - Can use different features optimized for each classification task
+  - More interpretable decision process
+  - Each level focuses on distinguishing similar patterns
+  - Strong regularization to prevent overfitting
+
+================================================================================
+LEVEL 1 PARAMETERS: Wake vs Sleep
+================================================================================
+{
+  "colsample_bytree": 0.7703212371517929,
+  "learning_rate": 0.08806758113904081,
+  "max_depth": 4,
+  "min_child_samples": 150,
+  "min_data_in_leaf": 30,
+  "n_estimators": 200,
+  "num_leaves": 20,
+  "reg_alpha": 50.0,
+  "reg_lambda": 15.95378589689875,
+  "subsample": 0.6304631102087418
+}
+
+================================================================================
+LEVEL 2 PARAMETERS: REM vs Non-REM
+================================================================================
+{
+  "colsample_bytree": 0.6260389585310896,
+  "learning_rate": 0.09999026029316781,
+  "max_depth": 4,
+  "min_child_samples": 110,
+  "min_data_in_leaf": 50,
+  "n_estimators": 200,
+  "num_leaves": 20,
+  "reg_alpha": 50.0,
+  "reg_lambda": 10.08769312570534,
+  "subsample": 0.8041999113247976
+}
+
+================================================================================
+LEVEL 3 PARAMETERS: N1 vs N2 vs N3
+================================================================================
+{
+  "colsample_bytree": 0.7650749395368392,
+  "learning_rate": 0.09005116269362873,
+  "max_depth": 4,
+  "min_child_samples": 160,
+  "min_data_in_leaf": 20,
+  "n_estimators": 200,
+  "num_leaves": 20,
+  "reg_alpha": 60.0,
+  "reg_lambda": 15.968317705389861,
+  "subsample": 0.6973798484338658
+}
+
+================================================================================
+FEATURE SELECTION:
+================================================================================
+Level 1 features: 366 features
+Level 2 features: 366 features
+Level 3 features: 366 features
+

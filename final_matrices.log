@@ -1,0 +1,91 @@
+================================================================================
+MINMAX NORMALIZATION WITH CONFUSION MATRICES
+================================================================================
+
+Loading data...
+Data shape: (62977, 610)
+Features: 597, Subjects: 80
+
+Applying MinMax normalization per subject...
+
+Preparing datasets...
+Train: 43761 samples, [10698  4666  4320 22209  1868]
+Val: 6367 samples, [1366  707 1079 3145   70]
+Test: 12849 samples, [2447 1674 1395 7028  305]
+
+Training model with MinMax normalization (150 trials)...
+  Running hyperparameter optimization...
+  Best validation F1: 0.5517
+
+================================================================================
+RESULTS
+================================================================================
+Train Accuracy: 0.9002
+Val Accuracy: 0.5508
+Test Accuracy: 0.5423
+Overfit Gap (Train-Val): 0.3494
+
+================================================================================
+TRAINING SET
+================================================================================
+
+Confusion matrix saved to: ./results/final_minmax_matrices_2025_10_15_22_22/train_confusion_matrix.png
+
+Confusion Matrix (counts):
+[[ 9860   150   378   294    16]
+ [    0  4663     2     1     0]
+ [    4     8  4289    18     1]
+ [  749   294  1904 18713   549]
+ [    0     0     0     0  1868]]
+
+Per-class recall:
+  Wake: 92.2% (9860/10698 samples)
+  REM: 99.9% (4663/4666 samples)
+  N1: 99.3% (4289/4320 samples)
+  N2: 84.3% (18713/22209 samples)
+  N3: 100.0% (1868/1868 samples)
+
+================================================================================
+VALIDATION SET
+================================================================================
+
+Confusion matrix saved to: ./results/final_minmax_matrices_2025_10_15_22_22/val_confusion_matrix.png
+
+Confusion Matrix (counts):
+[[ 742   75  238  311    0]
+ [ 139  233   68  266    1]
+ [ 260   65  268  485    1]
+ [ 300  194  387 2262    2]
+ [   0    0    4   64    2]]
+
+Per-class recall:
+  Wake: 54.3% (742/1366 samples)
+  REM: 33.0% (233/707 samples)
+  N1: 24.8% (268/1079 samples)
+  N2: 71.9% (2262/3145 samples)
+  N3: 2.9% (2/70 samples)
+
+================================================================================
+TEST SET
+================================================================================
+
+Confusion matrix saved to: ./results/final_minmax_matrices_2025_10_15_22_22/test_confusion_matrix.png
+
+Confusion Matrix (counts):
+[[1513  100  315  519    0]
+ [ 269  406  149  849    1]
+ [ 510   89  271  522    3]
+ [ 957  352  727 4769  223]
+ [   1    9    2  284    9]]
+
+Per-class recall:
+  Wake: 61.8% (1513/2447 samples)
+  REM: 24.3% (406/1674 samples)
+  N1: 19.4% (271/1395 samples)
+  N2: 67.9% (4769/7028 samples)
+  N3: 3.0% (9/305 samples)
+
+
+================================================================================
+COMPLETE - All results saved to: ./results/final_minmax_matrices_2025_10_15_22_22
+================================================================================

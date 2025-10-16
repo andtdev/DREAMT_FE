@@ -1,0 +1,242 @@
+================================================================================
+ONE-VS-ALL BINARY CLASSIFICATION (5 MODELS)
+================================================================================
+
+Loading data...
+Data shape: (62977, 610)
+Features: 597, Subjects: 80
+
+Preparing datasets...
+Train: 43761 samples, [10698  4666  4320 22209  1868]
+Val: 6367 samples, [1366  707 1079 3145   70]
+Test: 12849 samples, [2447 1674 1395 7028  305]
+
+================================================================================
+TRAINING 5 BINARY CLASSIFIERS
+================================================================================
+
+================================================================================
+TRAINING: Wake (Class 0) vs All Others
+================================================================================
+Training set: 10698 positive, 33063 negative
+Validation set: 1366 positive, 5001 negative
+Running hyperparameter optimization (100 trials)...
+Best validation F1: 0.4651
+Best params: {'colsample_bytree': 0.8829713161538991, 'learning_rate': 0.09366164119065831, 'max_depth': 4, 'min_child_samples': 60, 'min_data_in_leaf': 50, 'n_estimators': 200, 'num_leaves': 10, 'reg_alpha': 50.0, 'reg_lambda': 11.563154189630016, 'subsample': 0.6214832240083544}
+
+Wake Binary Classification - Train:
+  Accuracy: 0.7449
+  F1-Score: 0.6368
+  Precision: 0.4884
+  Recall: 0.9148
+  Saved to: ./results/onevsall_2025_10_15_23_49/wake_vs_all_train_binary_cm.png
+
+Wake Binary Classification - Val:
+  Accuracy: 0.5558
+  F1-Score: 0.4369
+  Precision: 0.3001
+  Recall: 0.8031
+  Saved to: ./results/onevsall_2025_10_15_23_49/wake_vs_all_val_binary_cm.png
+
+Wake Binary Classification - Test:
+  Accuracy: 0.7157
+  F1-Score: 0.5403
+  Precision: 0.3904
+  Recall: 0.8774
+  Saved to: ./results/onevsall_2025_10_15_23_49/wake_vs_all_test_binary_cm.png
+
+Generating SHAP values for Wake...
+  Bar plot saved to: ./results/onevsall_2025_10_15_23_49/wake_vs_all_shap_bar.png
+  Beeswarm plot saved to: ./results/onevsall_2025_10_15_23_49/wake_vs_all_shap_beeswarm.png
+
+================================================================================
+TRAINING: REM (Class 1) vs All Others
+================================================================================
+Training set: 4666 positive, 39095 negative
+Validation set: 707 positive, 5660 negative
+Running hyperparameter optimization (100 trials)...
+Best validation F1: 0.4189
+Best params: {'colsample_bytree': 0.6275996335587825, 'learning_rate': 0.09749088063760201, 'max_depth': 4, 'min_child_samples': 50, 'min_data_in_leaf': 90, 'n_estimators': 200, 'num_leaves': 15, 'reg_alpha': 70.0, 'reg_lambda': 9.753233635302632, 'subsample': 0.7079974305986279}
+
+REM Binary Classification - Train:
+  Accuracy: 0.6851
+  F1-Score: 0.4007
+  Precision: 0.2513
+  Recall: 0.9874
+  Saved to: ./results/onevsall_2025_10_15_23_49/rem_vs_all_train_binary_cm.png
+
+REM Binary Classification - Val:
+  Accuracy: 0.6427
+  F1-Score: 0.3381
+  Precision: 0.2128
+  Recall: 0.8218
+  Saved to: ./results/onevsall_2025_10_15_23_49/rem_vs_all_val_binary_cm.png
+
+REM Binary Classification - Test:
+  Accuracy: 0.6544
+  F1-Score: 0.3369
+  Precision: 0.2246
+  Recall: 0.6738
+  Saved to: ./results/onevsall_2025_10_15_23_49/rem_vs_all_test_binary_cm.png
+
+Generating SHAP values for REM...
+  Bar plot saved to: ./results/onevsall_2025_10_15_23_49/rem_vs_all_shap_bar.png
+  Beeswarm plot saved to: ./results/onevsall_2025_10_15_23_49/rem_vs_all_shap_beeswarm.png
+
+================================================================================
+TRAINING: N1 (Class 2) vs All Others
+================================================================================
+Training set: 4320 positive, 39441 negative
+Validation set: 1079 positive, 5288 negative
+Running hyperparameter optimization (100 trials)...
+Best validation F1: 0.3515
+Best params: {'colsample_bytree': 0.9666063997829892, 'learning_rate': 0.0838765437377199, 'max_depth': 4, 'min_child_samples': 80, 'min_data_in_leaf': 60, 'n_estimators': 200, 'num_leaves': 40, 'reg_alpha': 110.0, 'reg_lambda': 11.505646317807209, 'subsample': 0.8529611855317043}
+
+N1 Binary Classification - Train:
+  Accuracy: 0.3820
+  F1-Score: 0.2380
+  Precision: 0.1355
+  Recall: 0.9778
+  Saved to: ./results/onevsall_2025_10_15_23_49/n1_vs_all_train_binary_cm.png
+
+N1 Binary Classification - Val:
+  Accuracy: 0.3011
+  F1-Score: 0.3189
+  Precision: 0.1910
+  Recall: 0.9657
+  Saved to: ./results/onevsall_2025_10_15_23_49/n1_vs_all_val_binary_cm.png
+
+N1 Binary Classification - Test:
+  Accuracy: 0.3554
+  F1-Score: 0.2357
+  Precision: 0.1353
+  Recall: 0.9154
+  Saved to: ./results/onevsall_2025_10_15_23_49/n1_vs_all_test_binary_cm.png
+
+Generating SHAP values for N1...
+  Bar plot saved to: ./results/onevsall_2025_10_15_23_49/n1_vs_all_shap_bar.png
+  Beeswarm plot saved to: ./results/onevsall_2025_10_15_23_49/n1_vs_all_shap_beeswarm.png
+
+================================================================================
+TRAINING: N2 (Class 3) vs All Others
+================================================================================
+Training set: 22209 positive, 21552 negative
+Validation set: 3145 positive, 3222 negative
+Running hyperparameter optimization (100 trials)...
+Best validation F1: 0.7165
+Best params: {'colsample_bytree': 0.8848821535205104, 'learning_rate': 0.01040223829106876, 'max_depth': 2, 'min_child_samples': 170, 'min_data_in_leaf': 50, 'n_estimators': 60, 'num_leaves': 25, 'reg_alpha': 100.0, 'reg_lambda': 12.11237941043078, 'subsample': 0.8444722872357339}
+
+N2 Binary Classification - Train:
+  Accuracy: 0.6348
+  F1-Score: 0.7101
+  Precision: 0.5946
+  Recall: 0.8815
+  Saved to: ./results/onevsall_2025_10_15_23_49/n2_vs_all_train_binary_cm.png
+
+N2 Binary Classification - Val:
+  Accuracy: 0.6556
+  F1-Score: 0.7196
+  Precision: 0.6018
+  Recall: 0.8948
+  Saved to: ./results/onevsall_2025_10_15_23_49/n2_vs_all_val_binary_cm.png
+
+N2 Binary Classification - Test:
+  Accuracy: 0.6508
+  F1-Score: 0.7345
+  Precision: 0.6287
+  Recall: 0.8830
+  Saved to: ./results/onevsall_2025_10_15_23_49/n2_vs_all_test_binary_cm.png
+
+Generating SHAP values for N2...
+  Bar plot saved to: ./results/onevsall_2025_10_15_23_49/n2_vs_all_shap_bar.png
+  Beeswarm plot saved to: ./results/onevsall_2025_10_15_23_49/n2_vs_all_shap_beeswarm.png
+
+================================================================================
+TRAINING: N3 (Class 4) vs All Others
+================================================================================
+Training set: 1868 positive, 41893 negative
+Validation set: 70 positive, 6297 negative
+Running hyperparameter optimization (100 trials)...
+Best validation F1: 0.0870
+Best params: {'colsample_bytree': 0.9577361849560423, 'learning_rate': 0.08988161568963163, 'max_depth': 3, 'min_child_samples': 100, 'min_data_in_leaf': 30, 'n_estimators': 190, 'num_leaves': 25, 'reg_alpha': 170.0, 'reg_lambda': 7.488449855861266, 'subsample': 0.8857388005143376}
+
+N3 Binary Classification - Train:
+  Accuracy: 0.7019
+  F1-Score: 0.2194
+  Precision: 0.1235
+  Recall: 0.9813
+  Saved to: ./results/onevsall_2025_10_15_23_49/n3_vs_all_train_binary_cm.png
+
+N3 Binary Classification - Val:
+  Accuracy: 0.7506
+  F1-Score: 0.0570
+  Precision: 0.0297
+  Recall: 0.6857
+  Saved to: ./results/onevsall_2025_10_15_23_49/n3_vs_all_val_binary_cm.png
+
+N3 Binary Classification - Test:
+  Accuracy: 0.6269
+  F1-Score: 0.0907
+  Precision: 0.0481
+  Recall: 0.7836
+  Saved to: ./results/onevsall_2025_10_15_23_49/n3_vs_all_test_binary_cm.png
+
+Generating SHAP values for N3...
+  Bar plot saved to: ./results/onevsall_2025_10_15_23_49/n3_vs_all_shap_bar.png
+  Beeswarm plot saved to: ./results/onevsall_2025_10_15_23_49/n3_vs_all_shap_beeswarm.png
+
+================================================================================
+MULTICLASS PREDICTIONS (COMBINING 5 BINARY MODELS)
+================================================================================
+
+================================================================================
+MULTICLASS RESULTS - Train
+================================================================================
+Overall Accuracy: 0.4045
+Weighted F1: 0.3677
+Cohen's Kappa: 0.3049
+
+Per-Class Recall:
+  Wake: 65.3% (6988/10698 samples)
+  REM: 84.1% (3926/4666 samples)
+  N1: 62.7% (2707/4320 samples)
+  N2: 10.4% (2309/22209 samples)
+  N3: 94.9% (1772/1868 samples)
+Saved to: ./results/onevsall_2025_10_15_23_49/multiclass_train_cm.png
+
+================================================================================
+MULTICLASS RESULTS - Val
+================================================================================
+Overall Accuracy: 0.2846
+Weighted F1: 0.2358
+Cohen's Kappa: 0.1515
+
+Per-Class Recall:
+  Wake: 48.2% (659/1366 samples)
+  REM: 51.6% (365/707 samples)
+  N1: 59.5% (642/1079 samples)
+  N2: 3.6% (112/3145 samples)
+  N3: 48.6% (34/70 samples)
+Saved to: ./results/onevsall_2025_10_15_23_49/multiclass_val_cm.png
+
+================================================================================
+MULTICLASS RESULTS - Test
+================================================================================
+Overall Accuracy: 0.2724
+Weighted F1: 0.2628
+Cohen's Kappa: 0.1584
+
+Per-Class Recall:
+  Wake: 57.4% (1404/2447 samples)
+  REM: 43.4% (726/1674 samples)
+  N1: 43.7% (609/1395 samples)
+  N2: 8.1% (570/7028 samples)
+  N3: 62.6% (191/305 samples)
+Saved to: ./results/onevsall_2025_10_15_23_49/multiclass_test_cm.png
+
+================================================================================
+COMPLETE
+================================================================================
+All results saved to: ./results/onevsall_2025_10_15_23_49
+
+Final Test Accuracy: 0.2724

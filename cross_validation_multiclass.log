@@ -1,0 +1,158 @@
+================================================================================
+SUBJECT-LEVEL CROSS-VALIDATION FOR SLEEP STAGE CLASSIFICATION
+================================================================================
+
+================================================================================
+DATA PREPARATION
+================================================================================
+Data shape: (62977, 610)
+Number of features: 597
+Number of subjects: 80
+
+================================================================================
+SPLIT 1/5 (Random Seed: 0)
+================================================================================
+Train subjects: 56
+Val subjects: 8
+Test subjects: 16
+  Train: 43761 samples, distribution: [10698  4666  4320 22209  1868]
+  Val: 6367 samples, distribution: [1366  707 1079 3145   70]
+  Test: 12849 samples, distribution: [2447 1674 1395 7028  305]
+
+  Training model...
+  Training samples: 43761, Validation samples: 6367
+  Evaluating...
+
+  Results for Split 1:
+    Train  - Acc: 0.7955, F1: 0.8033, Kappa: 0.7159
+    Val    - Acc: 0.4563, F1: 0.4717, Kappa: 0.2495
+    Test   - Acc: 0.5004, F1: 0.5158, Kappa: 0.2706
+    Overfit Gap (Train-Val): 0.3393
+
+================================================================================
+SPLIT 2/5 (Random Seed: 1)
+================================================================================
+Train subjects: 56
+Val subjects: 8
+Test subjects: 16
+  Train: 44703 samples, distribution: [10549  5032  4822 22539  1761]
+  Val: 5615 samples, distribution: [1218  605  877 2900   15]
+  Test: 12659 samples, distribution: [2744 1410 1095 6943  467]
+
+  Training model...
+  Training samples: 44703, Validation samples: 5615
+  Evaluating...
+
+  Results for Split 2:
+    Train  - Acc: 0.8582, F1: 0.8637, Kappa: 0.7990
+    Val    - Acc: 0.5106, F1: 0.5255, Kappa: 0.2962
+    Test   - Acc: 0.4678, F1: 0.4924, Kappa: 0.2399
+    Overfit Gap (Train-Val): 0.3476
+
+================================================================================
+SPLIT 3/5 (Random Seed: 2)
+================================================================================
+Train subjects: 56
+Val subjects: 8
+Test subjects: 16
+  Train: 44516 samples, distribution: [10221  5154  4932 22844  1365]
+  Val: 6496 samples, distribution: [2317  511  486 2822  360]
+  Test: 11965 samples, distribution: [1973 1382 1376 6716  518]
+
+  Training model...
+  Training samples: 44516, Validation samples: 6496
+  Evaluating...
+
+  Results for Split 3:
+    Train  - Acc: 0.6867, F1: 0.6991, Kappa: 0.5800
+    Val    - Acc: 0.4179, F1: 0.4576, Kappa: 0.2360
+    Test   - Acc: 0.4307, F1: 0.4566, Kappa: 0.2352
+    Overfit Gap (Train-Val): 0.2687
+
+================================================================================
+SPLIT 4/5 (Random Seed: 3)
+================================================================================
+Train subjects: 56
+Val subjects: 8
+Test subjects: 16
+  Train: 43848 samples, distribution: [ 9644  5029  4627 23083  1465]
+  Val: 6264 samples, distribution: [1578  616  740 3324    6]
+  Test: 12865 samples, distribution: [3289 1402 1427 5975  772]
+
+  Training model...
+  Training samples: 43848, Validation samples: 6264
+  Evaluating...
+
+  Results for Split 4:
+    Train  - Acc: 0.8549, F1: 0.8605, Kappa: 0.7917
+    Val    - Acc: 0.5525, F1: 0.5768, Kappa: 0.3340
+    Test   - Acc: 0.4848, F1: 0.4870, Kappa: 0.2659
+    Overfit Gap (Train-Val): 0.3024
+
+================================================================================
+SPLIT 5/5 (Random Seed: 4)
+================================================================================
+Train subjects: 56
+Val subjects: 8
+Test subjects: 16
+  Train: 44525 samples, distribution: [10548  5037  4622 22985  1333]
+  Val: 6155 samples, distribution: [1190  601  744 3320  300]
+  Test: 12297 samples, distribution: [2773 1409 1428 6077  610]
+
+  Training model...
+  Training samples: 44525, Validation samples: 6155
+  Evaluating...
+
+  Results for Split 5:
+    Train  - Acc: 0.7782, F1: 0.7887, Kappa: 0.6908
+    Val    - Acc: 0.4249, F1: 0.4403, Kappa: 0.2301
+    Test   - Acc: 0.4569, F1: 0.4755, Kappa: 0.2396
+    Overfit Gap (Train-Val): 0.3533
+
+================================================================================
+CROSS-VALIDATION SUMMARY
+================================================================================
+
+Accuracy Statistics Across 5 Splits:
+  Train:        Mean=0.7947, Std=0.0626, Range=[0.6867, 0.8582]
+  Validation:   Mean=0.4724, Std=0.0517, Range=[0.4179, 0.5525]
+  Test:         Mean=0.4681, Std=0.0239, Range=[0.4307, 0.5004]
+  Overfit Gap:  Mean=0.3223, Std=0.0321
+
+================================================================================
+DETAILED RESULTS PER SPLIT
+================================================================================
+ Split  Train_Acc  Val_Acc  Test_Acc  Train_F1   Val_F1  Test_F1  Train_Kappa  Val_Kappa  Test_Kappa  Overfit_Gap
+     1   0.795526 0.456259  0.500428  0.803267 0.471673 0.515774     0.715877   0.249459    0.270611     0.339267
+     2   0.858220 0.510597  0.467809  0.863681 0.525488 0.492355     0.798989   0.296233    0.239855     0.347623
+     3   0.686697 0.417950  0.430673  0.699119 0.457569 0.456563     0.579973   0.235976    0.235243     0.268747
+     4   0.854931 0.552522  0.484804  0.860512 0.576805 0.487050     0.791749   0.334029    0.265916     0.302408
+     5   0.778170 0.424858  0.456941  0.788675 0.440333 0.475516     0.690775   0.230128    0.239644     0.353312
+
+Results saved to: ./results/cross_validation_2025_10_15_18_33
+
+================================================================================
+DIAGNOSIS
+================================================================================
+
+1. Overfitting Severity:
+   SEVERE (Gap=0.3223) - Model memorizes training subjects
+
+2. Split Consistency:
+   INCONSISTENT (Std=0.0517) - Performance highly dependent on subject split
+
+3. Expected Performance:
+   On new subjects: 47.2% ± 10.1% (95% CI)
+
+4. Recommendations:
+   - Consider subject-level normalization/calibration
+   - Use more subjects for training if possible
+   - Try domain adaptation techniques
+   - Features may be too subject-specific
+   - Some subject groups are harder to predict
+   - Consider analyzing which subjects cause poor performance
+   - May need subject-specific models or adaptation
+
+================================================================================
+CROSS-VALIDATION COMPLETE
+================================================================================

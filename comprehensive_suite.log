@@ -1,0 +1,133 @@
+nohup: ignoring input
+[18:58:42 | 0.0min] ================================================================================
+[18:58:42 | 0.0min] COMPREHENSIVE 2-HOUR OPTIMIZATION SUITE
+[18:58:42 | 0.0min] ================================================================================
+[18:58:42 | 0.0min] 
+================================================================================
+[18:58:42 | 0.0min] DATA PREPARATION
+[18:58:42 | 0.0min] ================================================================================
+[18:59:06 | 0.4min] Data shape: (62977, 610)
+[18:59:06 | 0.4min] Features: 597, Subjects: 80
+[18:59:26 | 0.7min] 
+================================================================================
+[18:59:26 | 0.7min] EXPERIMENT 1/7: BASELINE (No Normalization)
+[18:59:26 | 0.7min] ================================================================================
+[18:59:26 | 0.7min] Starting experiment: baseline
+[18:59:26 | 0.7min]   Features: 366, Subjects: train=56, val=8, test=16
+[18:59:26 | 0.7min]   Training with 150 hyperparameter trials...
+[19:12:54 | 14.2min]   Best validation F1: 0.5231
+[19:12:55 | 14.2min]   Train Acc: 0.9174, Val Acc: 0.5071, Test Acc: 0.5526
+[19:12:55 | 14.2min]   Overfit Gap: 0.4102
+[19:12:55 | 14.2min] 
+================================================================================
+[19:12:55 | 14.2min] EXPERIMENT 2/7: ZSCORE NORMALIZATION
+[19:12:55 | 14.2min] ================================================================================
+[19:12:56 | 14.2min] Starting experiment: norm_zscore
+[19:12:56 | 14.2min]   Features: 366, Subjects: train=56, val=8, test=16
+[19:12:56 | 14.2min]   Training with 150 hyperparameter trials...
+[19:27:55 | 29.2min]   Best validation F1: 0.5389
+[19:27:56 | 29.2min]   Train Acc: 0.9248, Val Acc: 0.5392, Test Acc: 0.5615
+[19:27:56 | 29.2min]   Overfit Gap: 0.3856
+[19:27:56 | 29.2min] 
+================================================================================
+[19:27:56 | 29.2min] EXPERIMENT 3/7: ROBUST NORMALIZATION
+[19:27:56 | 29.2min] ================================================================================
+[19:27:58 | 29.3min] Starting experiment: norm_robust
+[19:27:58 | 29.3min]   Features: 366, Subjects: train=56, val=8, test=16
+[19:27:58 | 29.3min]   Training with 150 hyperparameter trials...
+[19:43:12 | 44.5min]   Best validation F1: 0.5416
+[19:43:12 | 44.5min]   Train Acc: 0.9144, Val Acc: 0.5241, Test Acc: 0.5596
+[19:43:12 | 44.5min]   Overfit Gap: 0.3903
+[19:43:12 | 44.5min] 
+================================================================================
+[19:43:12 | 44.5min] EXPERIMENT 4/7: PERCENTILE NORMALIZATION
+[19:43:12 | 44.5min] ================================================================================
+[19:43:16 | 44.6min] Starting experiment: norm_percentile
+[19:43:16 | 44.6min]   Features: 366, Subjects: train=56, val=8, test=16
+[19:43:16 | 44.6min]   Training with 150 hyperparameter trials...
+[19:57:03 | 58.3min]   Best validation F1: 0.5445
+[19:57:03 | 58.3min]   Train Acc: 0.9274, Val Acc: 0.5367, Test Acc: 0.5409
+[19:57:03 | 58.3min]   Overfit Gap: 0.3907
+[19:57:03 | 58.3min] 
+================================================================================
+[19:57:03 | 58.3min] EXPERIMENT 5/7: MINMAX NORMALIZATION
+[19:57:03 | 58.3min] ================================================================================
+[19:57:05 | 58.4min] Starting experiment: norm_minmax
+[19:57:05 | 58.4min]   Features: 366, Subjects: train=56, val=8, test=16
+[19:57:05 | 58.4min]   Training with 150 hyperparameter trials...
+[20:10:36 | 71.9min]   Best validation F1: 0.5550
+[20:10:37 | 71.9min]   Train Acc: 0.9041, Val Acc: 0.5574, Test Acc: 0.5467
+[20:10:37 | 71.9min]   Overfit Gap: 0.3467
+[20:10:37 | 71.9min] 
+================================================================================
+[20:10:37 | 71.9min] EXPERIMENT 6/7: FEATURE SELECTION (Remove Subject-Specific)
+[20:10:37 | 71.9min] ================================================================================
+[20:10:37 | 71.9min]   Total features: 366
+[20:10:37 | 71.9min]   Generalizable features: 343
+[20:10:37 | 71.9min]   Subject-specific features (removed): 23
+[20:10:37 | 71.9min] Starting experiment: feature_selection
+[20:10:37 | 71.9min]   Features: 343, Subjects: train=56, val=8, test=16
+[20:10:37 | 71.9min]   Training with 150 hyperparameter trials...
+[20:23:28 | 84.8min]   Best validation F1: 0.5066
+[20:23:29 | 84.8min]   Train Acc: 0.9050, Val Acc: 0.4922, Test Acc: 0.5362
+[20:23:29 | 84.8min]   Overfit Gap: 0.4127
+[20:23:29 | 84.8min] 
+================================================================================
+[20:23:29 | 84.8min] EXPERIMENT 7/7: COMBINED (Best Norm + Feature Selection)
+[20:23:29 | 84.8min] ================================================================================
+[20:23:29 | 84.8min]   Best normalization method: minmax
+[20:23:29 | 84.8min]   Using 343 generalizable features
+[20:23:30 | 84.8min] Starting experiment: combined_minmax_fs
+[20:23:30 | 84.8min]   Features: 343, Subjects: train=56, val=8, test=16
+[20:23:30 | 84.8min]   Training with 150 hyperparameter trials...
+[20:35:29 | 96.8min]   Best validation F1: 0.5612
+[20:35:29 | 96.8min]   Train Acc: 0.9069, Val Acc: 0.5541, Test Acc: 0.5404
+[20:35:29 | 96.8min]   Overfit Gap: 0.3528
+[20:35:29 | 96.8min] 
+================================================================================
+[20:35:29 | 96.8min] SUMMARY OF ALL EXPERIMENTS
+[20:35:29 | 96.8min] ================================================================================
+[20:35:29 | 96.8min] 
+        Experiment  Features  Train_Acc  Val_Acc  Test_Acc   Val_F1  Overfit_Gap
+       norm_minmax       366   0.904093 0.557405  0.546657 0.546750     0.346687
+combined_minmax_fs       343   0.906926 0.554107  0.540431 0.540859     0.352819
+       norm_zscore       366   0.924773 0.539186  0.561522 0.531780     0.385587
+   norm_percentile       366   0.927401 0.536673  0.540898 0.535126     0.390728
+       norm_robust       366   0.914422 0.524109  0.559577 0.522303     0.390313
+          baseline       366   0.917392 0.507146  0.552572 0.512822     0.410246
+ feature_selection       343   0.904961 0.492226  0.536151 0.499720     0.412736
+[20:35:29 | 96.8min] 
+================================================================================
+[20:35:29 | 96.8min] BEST APPROACH
+[20:35:29 | 96.8min] ================================================================================
+[20:35:29 | 96.8min] Experiment: norm_minmax
+[20:35:29 | 96.8min] Features: 366
+[20:35:29 | 96.8min] Validation Accuracy: 0.5574
+[20:35:29 | 96.8min] Test Accuracy: 0.5467
+[20:35:29 | 96.8min] Overfit Gap: 0.3467
+[20:35:29 | 96.8min] 
+Improvement over baseline:
+[20:35:29 | 96.8min]   Validation Accuracy: +0.0503 (+9.9%)
+[20:35:29 | 96.8min]   Overfit Gap Reduction: 0.0636 (15.5% reduction)
+[20:35:29 | 96.8min] 
+================================================================================
+[20:35:29 | 96.8min] CROSS-VALIDATION ON BEST APPROACH
+[20:35:29 | 96.8min] ================================================================================
+[20:35:31 | 96.8min] Running 5-fold cross-validation on best approach...
+[20:35:31 | 96.8min]   CV Split 1/5
+[20:45:28 | 106.8min]     Val: 0.5436, Test: 0.5425, Gap: 0.3547
+[20:45:28 | 106.8min]   CV Split 2/5
+[20:54:48 | 116.1min]     Val: 0.5361, Test: 0.5256, Gap: 0.3568
+[20:54:48 | 116.1min]   CV Split 3/5
+[21:01:17 | 122.6min]     Val: 0.4868, Test: 0.4960, Gap: 0.3399
+[21:01:17 | 122.6min]   CV Split 4/5
+[21:10:43 | 132.0min]     Val: 0.6218, Test: 0.4880, Gap: 0.2872
+[21:10:43 | 132.0min]   CV Split 5/5
+[21:18:20 | 139.6min]     Val: 0.5050, Test: 0.4509, Gap: 0.3782
+[21:18:20 | 139.6min]   CV Results: Val=0.5386±0.0464, Test=0.5006±0.0317, Gap=0.3434±0.0306
+[21:18:20 | 139.6min] 
+================================================================================
+[21:18:20 | 139.6min] COMPREHENSIVE SUITE COMPLETE
+[21:18:20 | 139.6min] ================================================================================
+[21:18:20 | 139.6min] All results saved to: ./results/comprehensive_suite_2025_10_15_18_58
+[21:18:20 | 139.6min] Total runtime: 139.6 minutes
