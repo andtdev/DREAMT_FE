@@ -209,10 +209,10 @@ for class_idx in range(num_classes):
 # N3 (class 4): 5x boost (most aggressive)
 scaling_factors = {
     0: 1.0,  # W - no scaling
-    1: 1.0,  # R - no scaling
-    2: 1.0,  # N1 - no scaling
+    1: 2.0,  # R - 2x boost
+    2: 2.0,  # N1 - 2x boost
     3: 1.0,  # N2 - no scaling
-    4: 1.0,  # N3 - no scaling
+    4: 10.0,  # N3 - 10x AGGRESSIVE boost
 }
 
 for class_idx in range(num_classes):
