@@ -430,44 +430,6 @@ def compute_probabilities_multiclass(list_sids, df, features_list, final_model, 
     return list_probabilities_subject, lengths, list_true_stages
 
 
-def extract_lstm_features(list_sids, df, features_list, lstm_feature_names):
-    """
-    Extract specific features for LSTM input.
-    
-    Parameters:
-    ----------
-    list_sids : list
-        A list of subject IDs for which to extract features.
-    df : pandas dataframe
-        The DataFrame containing the data.
-    features_list : list
-        A list of all feature names available.
-    lstm_feature_names : list
-        A list of specific feature names to extract for LSTM.
-    
-    Returns:
-    ----------
-    list_features_subject : list
-        A list of extracted features for each subject (shape: [n_samples, n_features]).
-    """
-    list_features_subject = []
-    
-    for sid in list_sids:
-        sid_df = df.loc[
-            df["sid"] == sid,
-            features_list + ["Sleep_Stage", "timestamp_start"],
-        ].copy()
-        
-        sid_df = sid_df.reset_index(drop=True)
-        sid_df = sid_df.dropna()
-        
-        # Extract the specific features for LSTM
-        features = sid_df.loc[:, lstm_feature_names].to_numpy()
-        list_features_subject.append(features)
-    
-    return list_features_subject
-
-
 class TimeSeriesDataset(Dataset):
     def __init__(self, data, lengths, labels):
         self.data = data

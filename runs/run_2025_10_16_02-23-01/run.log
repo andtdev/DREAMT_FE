@@ -1,0 +1,320 @@
+(dreamt) admin@ip-172-31-24-179:~/DREAMT_FE$ python new_experiments.py 
+Run folder created: runs/run_2025_10_16_02-23-01
+Code files saved to: runs/run_2025_10_16_02-23-01/code
+
+Loading data with original sleep stages preserved...
+Data loaded: (82671, 610)
+Number of features: 597
+Sleep stage distribution:
+Sleep_Stage
+N2    32382
+P     19694
+W     14511
+R      7047
+N1     6794
+N3     2243
+Name: count, dtype: int64
+
+================================================================================
+Starting analysis for 5 sleep stages (one-vs-rest)
+================================================================================
+
+
+================================================================================
+SCENARIO 1/5: Wake (W) vs Others
+================================================================================
+
+Class distribution for Wake:
+  Wake: 34205
+  Others: 48466
+
+Train data balance: [33063 24620]
+Validation data balance: [5001 3038]
+Test data balance: [10402  6547]
+
+Resampling training data...
+Resampled train data balance: [33063 33063]
+
+Training LightGBM model...
+100%|███████████████████| 50/50 [03:28<00:00,  4.16s/trial, best loss: -0.7077385424492864]
+Best hyperparameters: {'learning_rate': 0.4682941216916454, 'max_depth': 3.0, 'n_estimators': 270.0, 'num_leaves': 20.0, 'reg_alpha': 70.0, 'reg_lambda': 2.724695980743748}
+Found `num_iterations` in params. Will use it instead of argument
+[LightGBM] [Info] Number of positive: 33063, number of negative: 33063
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.038682 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 91238
+[LightGBM] [Info] Number of data points in the train set: 66126, number of used features: 358
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+✓ Model saved: runs/run_2025_10_16_02-23-01/output/Wake_LightGBM_model.pkl
+Evaluating on training data...
+[[30025  3038]
+ [ 3613 21007]]
+✓ Training CM saved: runs/run_2025_10_16_02-23-01/output/Wake_train_CM.png
+Evaluating on test data...
+[[8840 1562]
+ [ 875 5672]]
+✓ Testing CM saved: runs/run_2025_10_16_02-23-01/output/Wake_test_CM.png
+Computing SHAP values...
+LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+✓ SHAP bar plot saved: runs/run_2025_10_16_02-23-01/output/Wake_shap_bar.png
+✓ SHAP beeswarm plot saved: runs/run_2025_10_16_02-23-01/output/Wake_shap_beeswarm.png
+
+✓ Scenario 1/5 complete: Wake
+
+================================================================================
+SCENARIO 2/5: REM (R) vs Others
+================================================================================
+
+Class distribution for REM:
+  REM: 7047
+  Others: 75624
+
+Train data balance: [53017  4666]
+Validation data balance: [7332  707]
+Test data balance: [15275  1674]
+
+Resampling training data...
+Resampled train data balance: [53017 53017]
+
+Training LightGBM model...
+100%|███████████████████| 50/50 [04:33<00:00,  5.46s/trial, best loss: -0.3942161339421614]
+Best hyperparameters: {'learning_rate': 0.17586154930905923, 'max_depth': 2.0, 'n_estimators': 210.0, 'num_leaves': 30.0, 'reg_alpha': 82.0, 'reg_lambda': 4.379108891437275}
+Found `num_iterations` in params. Will use it instead of argument
+[LightGBM] [Info] Number of positive: 53017, number of negative: 53017
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.057719 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 91290
+[LightGBM] [Info] Number of data points in the train set: 106034, number of used features: 358
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+✓ Model saved: runs/run_2025_10_16_02-23-01/output/REM_LightGBM_model.pkl
+Evaluating on training data...
+[[48537  4480]
+ [ 2159  2507]]
+✓ Training CM saved: runs/run_2025_10_16_02-23-01/output/REM_train_CM.png
+Evaluating on test data...
+[[14119  1156]
+ [ 1155   519]]
+✓ Testing CM saved: runs/run_2025_10_16_02-23-01/output/REM_test_CM.png
+Computing SHAP values...
+LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+✓ SHAP bar plot saved: runs/run_2025_10_16_02-23-01/output/REM_shap_bar.png
+✓ SHAP beeswarm plot saved: runs/run_2025_10_16_02-23-01/output/REM_shap_beeswarm.png
+
+✓ Scenario 2/5 complete: REM
+
+================================================================================
+SCENARIO 3/5: N1 (N1) vs Others
+================================================================================
+
+Class distribution for N1:
+  N1: 6794
+  Others: 75877
+
+Train data balance: [53363  4320]
+Validation data balance: [6960 1079]
+Test data balance: [15554  1395]
+
+Resampling training data...
+Resampled train data balance: [53363 53363]
+
+Training LightGBM model...
+100%|██████████████████| 50/50 [04:24<00:00,  5.30s/trial, best loss: -0.31040429200996356]
+Best hyperparameters: {'learning_rate': 0.006509293470356566, 'max_depth': 3.0, 'n_estimators': 190.0, 'num_leaves': 90.0, 'reg_alpha': 16.0, 'reg_lambda': 1.0057150375533401}
+Found `num_iterations` in params. Will use it instead of argument
+[LightGBM] [Info] Number of positive: 53363, number of negative: 53363
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.058956 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 91290
+[LightGBM] [Info] Number of data points in the train set: 106726, number of used features: 358
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+✓ Model saved: runs/run_2025_10_16_02-23-01/output/N1_LightGBM_model.pkl
+Evaluating on training data...
+[[32279 21084]
+ [ 1396  2924]]
+✓ Training CM saved: runs/run_2025_10_16_02-23-01/output/N1_train_CM.png
+Evaluating on test data...
+[[9195 6359]
+ [ 503  892]]
+✓ Testing CM saved: runs/run_2025_10_16_02-23-01/output/N1_test_CM.png
+Computing SHAP values...
+LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+✓ SHAP bar plot saved: runs/run_2025_10_16_02-23-01/output/N1_shap_bar.png
+✓ SHAP beeswarm plot saved: runs/run_2025_10_16_02-23-01/output/N1_shap_beeswarm.png
+
+✓ Scenario 3/5 complete: N1
+
+================================================================================
+SCENARIO 4/5: N2 (N2) vs Others
+================================================================================
+
+Class distribution for N2:
+  N2: 32382
+  Others: 50289
+
+Train data balance: [35474 22209]
+Validation data balance: [4894 3145]
+Test data balance: [9921 7028]
+
+Resampling training data...
+Resampled train data balance: [35474 35474]
+
+Training LightGBM model...
+100%|███████████████████| 50/50 [03:20<00:00,  4.01s/trial, best loss: -0.6939137036568391]
+Best hyperparameters: {'learning_rate': 0.025322829264079097, 'max_depth': 5.0, 'n_estimators': 210.0, 'num_leaves': 50.0, 'reg_alpha': 132.0, 'reg_lambda': 1.5058372692608408}
+Found `num_iterations` in params. Will use it instead of argument
+[LightGBM] [Info] Number of positive: 35474, number of negative: 35474
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.041662 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 91258
+[LightGBM] [Info] Number of data points in the train set: 70948, number of used features: 358
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+✓ Model saved: runs/run_2025_10_16_02-23-01/output/N2_LightGBM_model.pkl
+Evaluating on training data...
+[[22228 13246]
+ [ 2449 19760]]
+✓ Training CM saved: runs/run_2025_10_16_02-23-01/output/N2_train_CM.png
+Evaluating on test data...
+[[6189 3732]
+ [ 855 6173]]
+✓ Testing CM saved: runs/run_2025_10_16_02-23-01/output/N2_test_CM.png
+Computing SHAP values...
+LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+✓ SHAP bar plot saved: runs/run_2025_10_16_02-23-01/output/N2_shap_bar.png
+✓ SHAP beeswarm plot saved: runs/run_2025_10_16_02-23-01/output/N2_shap_beeswarm.png
+
+✓ Scenario 4/5 complete: N2
+
+================================================================================
+SCENARIO 5/5: N3 (N3) vs Others
+================================================================================
+
+Class distribution for N3:
+  N3: 2243
+  Others: 80428
+
+Train data balance: [55815  1868]
+Validation data balance: [7969   70]
+Test data balance: [16644   305]
+
+Resampling training data...
+Resampled train data balance: [55815 55815]
+
+Training LightGBM model...
+100%|██████████████████| 50/50 [04:06<00:00,  4.93s/trial, best loss: -0.05975842339478703]
+Best hyperparameters: {'learning_rate': 0.023418680256542104, 'max_depth': 4.0, 'n_estimators': 80.0, 'num_leaves': 30.0, 'reg_alpha': 104.0, 'reg_lambda': 1.635162911133152}
+Found `num_iterations` in params. Will use it instead of argument
+[LightGBM] [Info] Number of positive: 55815, number of negative: 55815
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.071413 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 91290
+[LightGBM] [Info] Number of data points in the train set: 111630, number of used features: 358
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+✓ Model saved: runs/run_2025_10_16_02-23-01/output/N3_LightGBM_model.pkl
+Evaluating on training data...
+[[46765  9050]
+ [  185  1683]]
+✓ Training CM saved: runs/run_2025_10_16_02-23-01/output/N3_train_CM.png
+Evaluating on test data...
+[[13610  3034]
+ [  111   194]]
+✓ Testing CM saved: runs/run_2025_10_16_02-23-01/output/N3_test_CM.png
+Computing SHAP values...
+LightGBM binary classifier with TreeExplainer shap values output has changed to a list of ndarray
+✓ SHAP bar plot saved: runs/run_2025_10_16_02-23-01/output/N3_shap_bar.png
+✓ SHAP beeswarm plot saved: runs/run_2025_10_16_02-23-01/output/N3_shap_beeswarm.png
+
+✓ Scenario 5/5 complete: N3
+
+================================================================================
+ALL SCENARIOS COMPLETE!
+================================================================================
+All outputs saved to: runs/run_2025_10_16_02-23-01
+  - Code snapshots: runs/run_2025_10_16_02-23-01/code/
+  - Results: runs/run_2025_10_16_02-23-01/output/
+
+Generated files per stage:
+  - <Stage>_LightGBM_model.pkl
+  - <Stage>_train_CM.png
+  - <Stage>_test_CM.png
+  - <Stage>_shap_bar.png
+  - <Stage>_shap_beeswarm.png
+================================================================================
+(dreamt) admin@ip-172-31-24-179:~/DREAMT_FE$ 

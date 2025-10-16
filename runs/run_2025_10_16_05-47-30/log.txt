@@ -1,0 +1,65 @@
+Logging to: runs/run_2025_10_16_05-47-30/log.txt
+Run folder created: runs/run_2025_10_16_05-47-30
+Code files saved to: runs/run_2025_10_16_05-47-30/code
+
+Loading data for multiclass classification...
+Data loaded: (82671, 610)
+Number of features: 597
+Sleep stage distribution:
+Sleep_Stage
+W     34205
+N2    32382
+R      7047
+N1     6794
+N3     2243
+Name: count, dtype: int64
+
+Class mapping: {'W': 0, 'R': 1, 'N1': 2, 'N2': 3, 'N3': 4}
+Training 5-class classifier: ['W', 'R', 'N1', 'N2', 'N3']
+
+================================================================================
+Multiclass Sleep Stage Classification
+================================================================================
+
+Train data class distribution:
+  W: 24620
+  R: 4666
+  N1: 4320
+  N2: 22209
+  N3: 1868
+
+Validation data class distribution:
+  W: 3038
+  R: 707
+  N1: 1079
+  N2: 3145
+  N3: 70
+
+Test data class distribution:
+  W: 6547
+  R: 1674
+  N1: 1395
+  N2: 7028
+  N3: 305
+
+Calculating AGGRESSIVE class weights for cost-sensitive learning...
+Aggressive class weights (higher = more penalty for misclassification):
+  W: 0.469 (base: 0.469, boost: 1.0x, n=24620)
+  R: 4.945 (base: 2.472, boost: 2.0x, n=4666)
+  N1: 5.341 (base: 2.671, boost: 2.0x, n=4320)
+  N2: 0.519 (base: 0.519, boost: 1.0x, n=22209)
+  N3: 30.880 (base: 6.176, boost: 5.0x, n=1868)
+
+Resampling training data with SMOTE...
+Resampled train data class distribution:
+  W: 24620
+  R: 24620
+  N1: 24620
+  N2: 24620
+  N3: 24620
+
+Training LightGBM multiclass model with FOCAL LOSS...
+Focal loss focuses training on hard-to-classify examples (minority classes)
+Using class weights AND focal loss for maximum minority class attention...
+Using Focal Loss with alpha=1.0, gamma=2.0
+  0%|          | 0/50 [00:00<?, ?trial/s, best loss=?]  0%|          | 0/50 [00:00<?, ?trial/s, best loss=?]

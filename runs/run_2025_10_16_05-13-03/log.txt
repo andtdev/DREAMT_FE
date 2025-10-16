@@ -1,0 +1,395 @@
+Logging to: runs/run_2025_10_16_05-13-03/log.txt
+Run folder created: runs/run_2025_10_16_05-13-03
+Code files saved to: runs/run_2025_10_16_05-13-03/code
+
+Loading data for multiclass classification...
+Data loaded: (82671, 610)
+Number of features: 597
+Sleep stage distribution:
+Sleep_Stage
+W     34205
+N2    32382
+R      7047
+N1     6794
+N3     2243
+Name: count, dtype: int64
+
+Class mapping: {'W': 0, 'R': 1, 'N1': 2, 'N2': 3, 'N3': 4}
+Training 5-class classifier: ['W', 'R', 'N1', 'N2', 'N3']
+
+================================================================================
+Multiclass Sleep Stage Classification
+================================================================================
+
+Train data class distribution:
+  W: 24620
+  R: 4666
+  N1: 4320
+  N2: 22209
+  N3: 1868
+
+Validation data class distribution:
+  W: 3038
+  R: 707
+  N1: 1079
+  N2: 3145
+  N3: 70
+
+Test data class distribution:
+  W: 6547
+  R: 1674
+  N1: 1395
+  N2: 7028
+  N3: 305
+
+Calculating AGGRESSIVE class weights for cost-sensitive learning...
+Aggressive class weights (higher = more penalty for misclassification):
+  W: 0.469 (base: 0.469, boost: 1.0x, n=24620)
+  R: 4.945 (base: 2.472, boost: 2.0x, n=4666)
+  N1: 5.341 (base: 2.671, boost: 2.0x, n=4320)
+  N2: 0.519 (base: 0.519, boost: 1.0x, n=22209)
+  N3: 30.880 (base: 6.176, boost: 5.0x, n=1868)
+
+Resampling training data with SMOTE...
+Resampled train data class distribution:
+  W: 24620
+  R: 24620
+  N1: 24620
+  N2: 24620
+  N3: 24620
+
+Training LightGBM multiclass model with cost-sensitive learning...
+Using class weights to penalize minority class misclassifications more heavily...
+  0%|          | 0/50 [00:00<?, ?trial/s, best loss=?]  2%|2         | 1/50 [01:01<50:25, 61.75s/trial, best loss: -0.5659201720990983]  4%|4         | 2/50 [01:24<30:59, 38.75s/trial, best loss: -0.5659201720990983]  6%|6         | 3/50 [01:42<22:59, 29.36s/trial, best loss: -0.5659201720990983]  8%|8         | 4/50 [01:52<16:39, 21.74s/trial, best loss: -0.5659201720990983] 10%|#         | 5/50 [02:16<16:44, 22.32s/trial, best loss: -0.5659201720990983] 12%|#2        | 6/50 [02:31<14:34, 19.87s/trial, best loss: -0.5659201720990983] 14%|#4        | 7/50 [02:42<12:18, 17.18s/trial, best loss: -0.5659201720990983] 16%|#6        | 8/50 [02:57<11:27, 16.37s/trial, best loss: -0.5659201720990983] 18%|#8        | 9/50 [03:16<11:51, 17.36s/trial, best loss: -0.5659201720990983] 20%|##        | 10/50 [03:26<10:02, 15.06s/trial, best loss: -0.5659201720990983] 22%|##2       | 11/50 [03:45<10:30, 16.17s/trial, best loss: -0.5659201720990983] 24%|##4       | 12/50 [03:58<09:35, 15.15s/trial, best loss: -0.5659201720990983] 26%|##6       | 13/50 [04:18<10:12, 16.55s/trial, best loss: -0.5659201720990983] 28%|##8       | 14/50 [04:43<11:36, 19.35s/trial, best loss: -0.5659201720990983] 30%|###       | 15/50 [04:57<10:11, 17.46s/trial, best loss: -0.5659201720990983] 32%|###2      | 16/50 [05:16<10:19, 18.21s/trial, best loss: -0.5659201720990983] 34%|###4      | 17/50 [05:30<09:16, 16.85s/trial, best loss: -0.5659201720990983] 36%|###6      | 18/50 [05:48<09:12, 17.26s/trial, best loss: -0.5659201720990983] 38%|###8      | 19/50 [06:04<08:40, 16.80s/trial, best loss: -0.5659201720990983] 40%|####      | 20/50 [06:19<08:03, 16.12s/trial, best loss: -0.5659201720990983] 42%|####2     | 21/50 [06:57<10:59, 22.73s/trial, best loss: -0.5659201720990983] 44%|####4     | 22/50 [07:35<12:45, 27.32s/trial, best loss: -0.5659201720990983] 46%|####6     | 23/50 [08:12<13:39, 30.37s/trial, best loss: -0.5659201720990983] 48%|####8     | 24/50 [08:26<11:02, 25.47s/trial, best loss: -0.5659201720990983] 50%|#####     | 25/50 [09:19<13:57, 33.50s/trial, best loss: -0.5659201720990983] 52%|#####2    | 26/50 [10:15<16:05, 40.23s/trial, best loss: -0.5659201720990983] 54%|#####4    | 27/50 [10:54<15:18, 39.93s/trial, best loss: -0.5659201720990983] 56%|#####6    | 28/50 [11:32<14:30, 39.58s/trial, best loss: -0.5659201720990983] 58%|#####8    | 29/50 [12:22<14:53, 42.55s/trial, best loss: -0.5659201720990983] 60%|######    | 30/50 [13:12<14:54, 44.72s/trial, best loss: -0.5659201720990983] 62%|######2   | 31/50 [13:45<13:06, 41.37s/trial, best loss: -0.5659201720990983] 64%|######4   | 32/50 [14:32<12:54, 43.04s/trial, best loss: -0.5659201720990983] 66%|######6   | 33/50 [14:58<10:42, 37.80s/trial, best loss: -0.5659201720990983] 68%|######8   | 34/50 [16:06<12:31, 46.97s/trial, best loss: -0.5659201720990983] 70%|#######   | 35/50 [16:45<11:07, 44.50s/trial, best loss: -0.5659201720990983] 72%|#######2  | 36/50 [17:06<08:46, 37.61s/trial, best loss: -0.5659201720990983] 74%|#######4  | 37/50 [18:06<09:35, 44.23s/trial, best loss: -0.5659201720990983] 76%|#######6  | 38/50 [18:57<09:15, 46.31s/trial, best loss: -0.5659201720990983] 78%|#######8  | 39/50 [19:39<08:13, 44.83s/trial, best loss: -0.5659201720990983] 80%|########  | 40/50 [19:55<06:03, 36.31s/trial, best loss: -0.5659201720990983] 82%|########2 | 41/50 [20:46<06:05, 40.60s/trial, best loss: -0.5659201720990983] 84%|########4 | 42/50 [21:11<04:47, 35.90s/trial, best loss: -0.5659201720990983] 86%|########6 | 43/50 [22:04<04:47, 41.14s/trial, best loss: -0.5659201720990983] 88%|########8 | 44/50 [22:34<03:46, 37.70s/trial, best loss: -0.5659201720990983] 90%|######### | 45/50 [23:22<03:25, 41.01s/trial, best loss: -0.5659201720990983] 92%|#########2| 46/50 [23:58<02:38, 39.51s/trial, best loss: -0.5659201720990983] 94%|#########3| 47/50 [24:35<01:55, 38.59s/trial, best loss: -0.5659201720990983] 96%|#########6| 48/50 [25:01<01:09, 34.78s/trial, best loss: -0.5659201720990983] 98%|#########8| 49/50 [25:43<00:36, 36.94s/trial, best loss: -0.5659201720990983]100%|##########| 50/50 [26:01<00:00, 31.23s/trial, best loss: -0.5659201720990983]100%|##########| 50/50 [26:01<00:00, 31.22s/trial, best loss: -0.5659201720990983]
+Best hyperparameters: {'learning_rate': 0.20620300062766822, 'max_depth': 6.0, 'n_estimators': 260.0, 'num_leaves': 70.0, 'reg_alpha': 16.0, 'reg_lambda': 0.44655308375379327}
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.061367 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 91290
+[LightGBM] [Info] Number of data points in the train set: 123100, number of used features: 358
+[LightGBM] [Info] Start training from score -4.499354
+[LightGBM] [Info] Start training from score -2.142950
+[LightGBM] [Info] Start training from score -2.065903
+[LightGBM] [Info] Start training from score -4.396293
+[LightGBM] [Info] Start training from score -0.311225
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+✓ Model saved: runs/run_2025_10_16_05-13-03/output/LightGBM_multiclass_model.pkl
+
+Evaluating on training data...
+[[18111   828  4688   727   266]
+ [   12  4611    22    16     5]
+ [   31   101  4101    66    21]
+ [  600  1713  5519 12213  2164]
+ [    0     0     0     0  1868]]
+✓ Training CM saved: runs/run_2025_10_16_05-13-03/output/multiclass_train_CM.png
+
+================================================================================
+TRAINING SET Metrics Report
+================================================================================
+
+Overall Metrics:
+  Accuracy:        0.7091
+  F1 (Macro):      0.6691
+  F1 (Weighted):   0.7384
+  AUROC (Macro):   0.9688
+  AUROC (Weighted):0.9554
+  AUPRC (Macro):   0.8728
+  AUPRC (Weighted):0.9108
+
+Per-Class Metrics:
+Class      F1         AUROC      AUPRC     
+----------------------------------------
+W          0.8351     0.9632     0.9583    
+R          0.7737     0.9956     0.9490    
+N1         0.4398     0.9516     0.6156    
+N2         0.6933     0.9354     0.9054    
+N3         0.6034     0.9982     0.9357    
+================================================================================
+
+Evaluating on test data...
+[[4629  285 1249  298   86]
+ [  84  599  331  554  106]
+ [ 241  189  627  272   66]
+ [ 483  869 1763 2679 1234]
+ [   1    8   23  205   68]]
+✓ Testing CM saved: runs/run_2025_10_16_05-13-03/output/multiclass_test_CM.png
+
+================================================================================
+TEST SET Metrics Report
+================================================================================
+
+Overall Metrics:
+  Accuracy:        0.5075
+  F1 (Macro):      0.3788
+  F1 (Weighted):   0.5528
+  AUROC (Macro):   0.7844
+  AUROC (Weighted):0.8233
+  AUPRC (Macro):   0.4057
+  AUPRC (Weighted):0.6565
+
+Per-Class Metrics:
+Class      F1         AUROC      AUPRC     
+----------------------------------------
+W          0.7725     0.9150     0.8924    
+R          0.3306     0.7752     0.2900    
+N1         0.2327     0.7024     0.1575    
+N2         0.4855     0.7764     0.6499    
+N3         0.0729     0.7533     0.0389    
+================================================================================
+✓ Metrics summary saved: runs/run_2025_10_16_05-13-03/output/metrics_summary.csv
+
+Computing SHAP values...
+✓ SHAP bar plot for W saved: runs/run_2025_10_16_05-13-03/output/multiclass_shap_bar_W.png
+✓ SHAP bar plot for R saved: runs/run_2025_10_16_05-13-03/output/multiclass_shap_bar_R.png
+✓ SHAP bar plot for N1 saved: runs/run_2025_10_16_05-13-03/output/multiclass_shap_bar_N1.png
+✓ SHAP bar plot for N2 saved: runs/run_2025_10_16_05-13-03/output/multiclass_shap_bar_N2.png
+✓ SHAP bar plot for N3 saved: runs/run_2025_10_16_05-13-03/output/multiclass_shap_bar_N3.png
+
+================================================================================
+MULTICLASS CLASSIFICATION COMPLETE!
+================================================================================
+All outputs saved to: runs/run_2025_10_16_05-13-03
+  - Code snapshots: runs/run_2025_10_16_05-13-03/code/
+  - Results: runs/run_2025_10_16_05-13-03/output/
+  - Complete log: runs/run_2025_10_16_05-13-03/log.txt
+
+Generated files:
+  - LightGBM_multiclass_model.pkl
+  - multiclass_train_CM.png
+  - multiclass_test_CM.png
+  - metrics_summary.csv
+  - multiclass_shap_bar_<class>.png (one per class: W, R, N1, N2, N3)
+  - log.txt (complete output with all metrics)
+
+Regularization Settings:
+  - reg_alpha: 0-20 (reduced from 0-180)
+  - reg_lambda: 0.01-1.0 (reduced from 0.2-5.0)
+================================================================================

@@ -1,0 +1,19 @@
+Logging to: runs/run_2025_10_16_07-37-42/log.txt
+Run folder created: runs/run_2025_10_16_07-37-42
+Code files saved to: runs/run_2025_10_16_07-37-42/code
+
+Loading data for multiclass classification...
+Data loaded: (82671, 610)
+Number of features: 597
+Sleep stage distribution:
+Sleep_Stage
+W     34205
+N2    32382
+R      7047
+N1     6794
+N3     2243
+Name: count, dtype: int64
+
+Class mapping: {'W': 0, 'R': 1, 'N1': 2, 'N2': 3, 'N3': 4}
+Training 5-class classifier: ['W', 'R', 'N1', 'N2', 'N3']
+

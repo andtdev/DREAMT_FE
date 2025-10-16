@@ -1,0 +1,152 @@
+Run folder created: runs/run_2025_10_16_04-37-57
+Code files saved to: runs/run_2025_10_16_04-37-57/code
+
+Loading data for multiclass classification...
+Data loaded: (82671, 610)
+Number of features: 597
+Sleep stage distribution:
+Sleep_Stage
+W     34205
+N2    32382
+R      7047
+N1     6794
+N3     2243
+Name: count, dtype: int64
+
+Class mapping: {'W': 0, 'R': 1, 'N1': 2, 'N2': 3, 'N3': 4}
+Training 5-class classifier: ['W', 'R', 'N1', 'N2', 'N3']
+
+================================================================================
+Multiclass Sleep Stage Classification
+================================================================================
+
+Train data class distribution:
+  W: 24620
+  R: 4666
+  N1: 4320
+  N2: 22209
+  N3: 1868
+
+Validation data class distribution:
+  W: 3038
+  R: 707
+  N1: 1079
+  N2: 3145
+  N3: 70
+
+Test data class distribution:
+  W: 6547
+  R: 1674
+  N1: 1395
+  N2: 7028
+  N3: 305
+
+Calculating AGGRESSIVE class weights for cost-sensitive learning...
+Aggressive class weights (higher = more penalty for misclassification):
+  W: 0.469 (base: 0.469, boost: 1.0x, n=24620)
+  R: 4.945 (base: 2.472, boost: 2.0x, n=4666)
+  N1: 5.341 (base: 2.671, boost: 2.0x, n=4320)
+  N2: 0.519 (base: 0.519, boost: 1.0x, n=22209)
+  N3: 30.880 (base: 6.176, boost: 5.0x, n=1868)
+
+Resampling training data with SMOTE...
+Resampled train data class distribution:
+  W: 24620
+  R: 24620
+  N1: 24620
+  N2: 24620
+  N3: 24620
+
+Training LightGBM multiclass model with cost-sensitive learning...
+Using class weights to penalize minority class misclassifications more heavily...
+100%|██████████████████████████████████████████████| 50/50 [24:00<00:00, 28.81s/trial, best loss: -0.5644791920876081]
+Best hyperparameters: {'learning_rate': 0.2957826804956951, 'max_depth': 6.0, 'n_estimators': 230.0, 'num_leaves': 50.0, 'reg_alpha': 0.0, 'reg_lambda': 2.806304145836271}
+Found `num_iterations` in params. Will use it instead of argument
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.064446 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 91290
+[LightGBM] [Info] Number of data points in the train set: 123100, number of used features: 358
+[LightGBM] [Info] Start training from score -4.499354
+[LightGBM] [Info] Start training from score -2.142950
+[LightGBM] [Info] Start training from score -2.065903
+[LightGBM] [Info] Start training from score -4.396293
+[LightGBM] [Info] Start training from score -0.311225
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+✓ Model saved: runs/run_2025_10_16_04-37-57/output/LightGBM_multiclass_model.pkl
+
+Evaluating on training data...
+[[20421   513  2832   742   112]
+ [    1  4651     8     6     0]
+ [   11    37  4234    35     3]
+ [  670  1120  3852 15351  1216]
+ [    0     0     0     0  1868]]
+✓ Training CM saved: runs/run_2025_10_16_04-37-57/output/multiclass_train_CM.png
+
+Evaluating on test data...
+[[4946  212  976  371   42]
+ [ 148  534  299  631   62]
+ [ 335  171  496  354   39]
+ [ 701  760 1513 3263  791]
+ [   0   11   28  244   22]]
+✓ Testing CM saved: runs/run_2025_10_16_04-37-57/output/multiclass_test_CM.png
+
+Computing SHAP values...
+✓ SHAP bar plot for W saved: runs/run_2025_10_16_04-37-57/output/multiclass_shap_bar_W.png
+✓ SHAP bar plot for R saved: runs/run_2025_10_16_04-37-57/output/multiclass_shap_bar_R.png
+✓ SHAP bar plot for N1 saved: runs/run_2025_10_16_04-37-57/output/multiclass_shap_bar_N1.png
+✓ SHAP bar plot for N2 saved: runs/run_2025_10_16_04-37-57/output/multiclass_shap_bar_N2.png
+✓ SHAP bar plot for N3 saved: runs/run_2025_10_16_04-37-57/output/multiclass_shap_bar_N3.png
+
+================================================================================
+MULTICLASS CLASSIFICATION COMPLETE!
+================================================================================
+All outputs saved to: runs/run_2025_10_16_04-37-57
+  - Code snapshots: runs/run_2025_10_16_04-37-57/code/
+  - Results: runs/run_2025_10_16_04-37-57/output/
+
+Generated files:
+  - LightGBM_multiclass_model.pkl
+  - multiclass_train_CM.png
+  - multiclass_test_CM.png
+  - multiclass_shap_bar_<class>.png (one per class: W, R, N1, N2, N3)
+================================================================================

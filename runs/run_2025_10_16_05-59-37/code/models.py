@@ -748,7 +748,7 @@ def LSTM_dataloader_multiclass(list_probabilities_subject, list_features_subject
     return dataloader
 
 
-def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate=0.001, num_classes=5, class_weight=None, use_focal_loss=False):
+def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate=0.001, num_classes=5, use_focal_loss=False):
     """
     Train a multiclass LSTM model using a DataLoader.
     
@@ -764,8 +764,6 @@ def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, le
         Learning rate for optimization.
     num_classes : int
         Number of output classes (default: 5 for W, R, N1, N2, N3).
-    class_weight : dict or None
-        Class weights for handling imbalance.
     use_focal_loss : bool
         Whether to use focal loss instead of cross-entropy.
 
@@ -782,23 +780,13 @@ def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, le
 
     model = BiLSTMPModel(input_size, hidden_layer_size, output_size).to(device)
     
-    # Convert class weights to tensor if provided
-    if class_weight is not None:
-        weight_tensor = torch.tensor([class_weight[i] for i in range(num_classes)], dtype=torch.float32).to(device)
-        print(f"Using class weights: {weight_tensor.cpu().numpy()}")
-    else:
-        weight_tensor = None
-    
     if use_focal_loss:
         from utils import FocalLoss
         loss_function = FocalLoss(alpha=0.25, gamma=2.0)
         print("Using Focal Loss for LSTM training")
     else:
-        loss_function = nn.CrossEntropyLoss(weight=weight_tensor)
-        if weight_tensor is not None:
-            print("Using Weighted Cross-Entropy Loss for LSTM training")
-        else:
-            print("Using Cross-Entropy Loss for LSTM training")
+        loss_function = nn.CrossEntropyLoss()
+        print("Using Cross-Entropy Loss for LSTM training")
     
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
     
@@ -835,7 +823,7 @@ def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, le
         avg_loss = total_loss / len(dataloader_train)
         avg_accuracy = total_accuracy / len(dataloader_train)
 
-        if (epoch + 1) % 10 == 0:
+        if (epoch + 1) % 5 == 0:
             print(f"Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f}, Accuracy: {avg_accuracy:.4f}")
 
     return model

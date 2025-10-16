@@ -279,7 +279,7 @@ def data_preparation(threshold, quality_df_dir, features_dir, info_dir):
 def clean_features_preserve_stages(all_subjects_fe_df, info_df, nan_feature_names, label_names):
     """
     Same as clean_features but preserves original sleep stages (N1, N2, N3, W, R) 
-    and maps P to W (as in original binary classification).
+    without mapping to binary.
     """
     # update features
     updated_feature_names = [
@@ -294,11 +294,9 @@ def clean_features_preserve_stages(all_subjects_fe_df, info_df, nan_feature_name
         updated_feature_names + label_names + ["sid"],
     ]
 
-    # Keep original sleep stages, map P to W, remove Missing
-    df = df[df.Sleep_Stage.isin(['N1', 'N2', 'N3', 'W', 'R', 'P'])]
-    
-    # Map P to W (as in original paper)
-    df.Sleep_Stage = df.Sleep_Stage.replace('P', 'W')
+    # Keep original sleep stages without aggregating N1/N2/N3
+    # Just remove P and Missing
+    df = df[df.Sleep_Stage.isin(['N1', 'N2', 'N3', 'W', 'R'])]
     
     # replace inf
     df = df.replace([np.inf, -np.inf], np.nan)
@@ -340,13 +338,12 @@ def clean_features_preserve_stages(all_subjects_fe_df, info_df, nan_feature_name
 
 def data_preparation_multiclass(threshold, quality_df_dir, features_dir, info_dir):
     """
-    Prepare data preserving all original sleep stages for multiclass classification.
+    Prepare data preserving all original sleep stages for one-vs-rest classification.
     
     Returns:
     -------
     clean_df : pandas DataFrame
-        Dataframe with Sleep_Stage as string labels (N1, N2, N3, W, R)
-        Note: P is mapped to W as in original paper.
+        Dataframe with Sleep_Stage as original labels (N1, N2, N3, W, R)
     new_features : list
         List of feature names
     good_quality_sids : list
@@ -389,39 +386,26 @@ def data_preparation_multiclass(threshold, quality_df_dir, features_dir, info_di
     return clean_df, new_features, good_quality_sids
 
 
-def map_stages_to_numeric(df):
+def relabel_for_stage_vs_rest(df, target_stage):
     """
-    Map sleep stages to numeric labels for multiclass classification.
-    
-    Mapping:
-    - W (Wake): 0
-    - R (REM): 1
-    - N1: 2
-    - N2: 3
-    - N3: 4
+    Relabel Sleep_Stage for one-vs-rest classification.
+    Maps the target_stage to 1 and all other stages to 0.
     
     Parameters:
     ----------
     df : pandas DataFrame
-        Dataframe with Sleep_Stage column containing string labels (W, R, N1, N2, N3)
+        Dataframe with Sleep_Stage column containing string labels
+    target_stage : str
+        The target stage to classify against all others (e.g., "W", "R", "N1", "N2", "N3")
     
     Returns:
     -------
     df_copy : pandas DataFrame
-        Copy of dataframe with Sleep_Stage as numeric labels
-    stage_to_num : dict
-        Mapping dictionary from stage names to numbers
-    num_to_stage : dict
-        Mapping dictionary from numbers to stage names
+        Copy of the dataframe with Sleep_Stage relabeled to binary (target=1, others=0)
     """
     df_copy = df.copy()
-    
-    stage_to_num = {'W': 0, 'R': 1, 'N1': 2, 'N2': 3, 'N3': 4}
-    num_to_stage = {0: 'W', 1: 'R', 2: 'N1', 3: 'N2', 4: 'N3'}
-    
-    df_copy["Sleep_Stage"] = df_copy["Sleep_Stage"].map(stage_to_num)
-    
-    return df_copy, stage_to_num, num_to_stage
+    df_copy["Sleep_Stage"] = (df_copy["Sleep_Stage"] == target_stage).astype(int)
+    return df_copy
 
 
 def split_data(new_df, good_quality_sids, features):
