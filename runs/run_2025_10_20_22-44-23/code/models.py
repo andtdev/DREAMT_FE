@@ -285,8 +285,8 @@ def LightGBM_engine_multiclass(X_train_resampled, y_train_resampled, X_val, y_va
     """
     space = {
         "max_depth": hp.quniform("max_depth", 2, 6, 1),
-        "reg_alpha": hp.quniform("reg_alpha", 5, 50, 5),  # Moderate L1 penalty (5-50) to prevent overfitting
-        "reg_lambda": hp.uniform("reg_lambda", 0.5, 3.0),  # Moderate L2 penalty (0.5-3.0) to prevent overfitting
+        "reg_alpha": hp.quniform("reg_alpha", 0, 20, 2),  # Reduced from 0-180 to 0-20
+        "reg_lambda": hp.uniform("reg_lambda", 0.01, 1.0),  # Reduced from 0.2-5 to 0.01-1.0
         "num_leaves": hp.quniform("num_leaves", 20, 100, 10),
         "n_estimators": hp.quniform("n_estimators", 50, 300, 10),
         "learning_rate": hp.uniform("learning_rate", 0.005, 0.5),

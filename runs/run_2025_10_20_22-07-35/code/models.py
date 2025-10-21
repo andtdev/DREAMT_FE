@@ -285,8 +285,8 @@ def LightGBM_engine_multiclass(X_train_resampled, y_train_resampled, X_val, y_va
     """
     space = {
         "max_depth": hp.quniform("max_depth", 2, 6, 1),
-        "reg_alpha": hp.quniform("reg_alpha", 5, 50, 5),  # Moderate L1 penalty (5-50) to prevent overfitting
-        "reg_lambda": hp.uniform("reg_lambda", 0.5, 3.0),  # Moderate L2 penalty (0.5-3.0) to prevent overfitting
+        "reg_alpha": hp.quniform("reg_alpha", 0, 20, 2),  # Reduced from 0-180 to 0-20
+        "reg_lambda": hp.uniform("reg_lambda", 0.01, 1.0),  # Reduced from 0.2-5 to 0.01-1.0
         "num_leaves": hp.quniform("num_leaves", 20, 100, 10),
         "n_estimators": hp.quniform("n_estimators", 50, 300, 10),
         "learning_rate": hp.uniform("learning_rate", 0.005, 0.5),
@@ -748,7 +748,7 @@ def LSTM_dataloader_multiclass(list_probabilities_subject, list_features_subject
     return dataloader
 
 
-def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate=0.001, num_classes=5, input_size=10, class_weight=None, use_focal_loss=False):
+def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, learning_rate=0.001, num_classes=5, class_weight=None, use_focal_loss=False):
     """
     Train a multiclass LSTM model using a DataLoader.
     
@@ -764,8 +764,6 @@ def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, le
         Learning rate for optimization.
     num_classes : int
         Number of output classes (default: 5 for W, R, N1, N2, N3).
-    input_size : int
-        Number of input features (default: 10 = 5 probabilities + 5 additional features).
     class_weight : dict or None
         Class weights for handling imbalance.
     use_focal_loss : bool
@@ -779,6 +777,7 @@ def LSTM_engine_multiclass(dataloader_train, num_epoch, hidden_layer_size=32, le
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(f"Training multiclass LSTM on {device}")
 
+    input_size = 10  # 5 probabilities + 5 additional features
     output_size = num_classes
 
     model = BiLSTMPModel(input_size, hidden_layer_size, output_size).to(device)

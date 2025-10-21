@@ -210,10 +210,10 @@ for class_idx in range(num_classes):
 
 # Apply scaling to minority classes (currently all set to 1.0 = no scaling)
 scaling_factors = {
-    0: 1.0,  # W 
-    1: 4.0,  # R 
-    2: 4.0,  # N1 
-    3: 1.0,  # N2+N3 (merged) 
+    0: 1.0,  # W - no scaling
+    1: 1.0,  # R - no scaling
+    2: 1.0,  # N1 - no scaling
+    3: 1.0,  # N2+N3 (merged) - no scaling
 }
 
 for class_idx in range(num_classes):
@@ -224,17 +224,9 @@ for class_idx, class_name in enumerate(class_names):
     base_weight = total_samples / (num_classes * class_counts[class_idx]) if class_counts[class_idx] > 0 else 1.0
     print(f"  {class_name}: {class_weights[class_idx]:.3f} (base: {base_weight:.3f}, boost: {scaling_factors[class_idx]}x, n={class_counts[class_idx]})")
 
-# Resample training data using SMOTE for multiclass (partial oversampling)
-print("\nResampling training data with SMOTE (50% oversampling)...")
-# Only oversample minority classes to 50% of majority class to reduce overfitting
-# This is less aggressive than full balancing but still helps minority classes
-majority_class_count = max([np.sum(y_train == i) for i in range(num_classes)])
-sampling_strategy = {
-    i: int(majority_class_count * 0.5) if np.sum(y_train == i) < majority_class_count * 0.5 
-    else np.sum(y_train == i)
-    for i in range(num_classes)
-}
-smote = SMOTE(random_state=0, sampling_strategy=sampling_strategy)
+# Resample training data using SMOTE for multiclass
+print("\nResampling training data with SMOTE...")
+smote = SMOTE(random_state=0)
 X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 
 print(f"Resampled train data class distribution:")
@@ -499,9 +491,9 @@ print(f"  - metrics_summary.csv")
 print(f"  - multiclass_shap_bar_<class>.png (one per class: W, R, N1, N2+N3)")
 print(f"  - log.txt (complete output with all metrics)")
 print(f"\nModel Settings:")
-print(f"  - Loss function: Cross-Entropy with class weights")
+print(f"  - Loss function: Cross-Entropy with class weights (scaling=1.0)")
 print(f"  - Classes: 4 (W, R, N1, N2+N3)")
-print(f"  - Regularization: MODERATE (reg_alpha 5-50, reg_lambda 0.5-3.0)")
-print(f"  - Data: SMOTE 50% oversampling (reduced to prevent overfitting)")
+print(f"  - Regularization: REDUCED (reg_alpha 0-20, reg_lambda 0.01-1.0)")
+print(f"  - Data: SMOTE resampling for balanced training")
 print(f"  - Note: N2 and N3 merged into N2+N3 to reduce class imbalance")
 print(f"{'='*80}")

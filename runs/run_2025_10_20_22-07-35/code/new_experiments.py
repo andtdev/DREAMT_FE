@@ -40,7 +40,6 @@ os.makedirs(output_dir, exist_ok=True)
 class Logger:
     def __init__(self, filename):
         self.terminal = sys.stdout
-        self.terminal_err = sys.stderr
         self.log = open(filename, 'w')
     
     def write(self, message):
@@ -52,9 +51,7 @@ class Logger:
         self.terminal.flush()
         self.log.flush()
 
-logger = Logger(f"{run_dir}/log.txt")
-sys.stdout = logger
-sys.stderr = logger  # Redirect stderr too
+sys.stdout = Logger(f"{run_dir}/log.txt")
 print(f"Logging to: {run_dir}/log.txt")
 
 def calculate_multiclass_metrics(y_true, y_pred, y_proba, class_names):
@@ -210,10 +207,10 @@ for class_idx in range(num_classes):
 
 # Apply scaling to minority classes (currently all set to 1.0 = no scaling)
 scaling_factors = {
-    0: 1.0,  # W 
-    1: 4.0,  # R 
-    2: 4.0,  # N1 
-    3: 1.0,  # N2+N3 (merged) 
+    0: 1.0,  # W - no scaling
+    1: 1.0,  # R - no scaling
+    2: 1.0,  # N1 - no scaling
+    3: 1.0,  # N2+N3 (merged) - no scaling
 }
 
 for class_idx in range(num_classes):
@@ -224,17 +221,9 @@ for class_idx, class_name in enumerate(class_names):
     base_weight = total_samples / (num_classes * class_counts[class_idx]) if class_counts[class_idx] > 0 else 1.0
     print(f"  {class_name}: {class_weights[class_idx]:.3f} (base: {base_weight:.3f}, boost: {scaling_factors[class_idx]}x, n={class_counts[class_idx]})")
 
-# Resample training data using SMOTE for multiclass (partial oversampling)
-print("\nResampling training data with SMOTE (50% oversampling)...")
-# Only oversample minority classes to 50% of majority class to reduce overfitting
-# This is less aggressive than full balancing but still helps minority classes
-majority_class_count = max([np.sum(y_train == i) for i in range(num_classes)])
-sampling_strategy = {
-    i: int(majority_class_count * 0.5) if np.sum(y_train == i) < majority_class_count * 0.5 
-    else np.sum(y_train == i)
-    for i in range(num_classes)
-}
-smote = SMOTE(random_state=0, sampling_strategy=sampling_strategy)
+# Resample training data using SMOTE for multiclass
+print("\nResampling training data with SMOTE...")
+smote = SMOTE(random_state=0)
 X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 
 print(f"Resampled train data class distribution:")
@@ -341,38 +330,26 @@ lstm_feature_names = [
 print(f"\nVerifying LSTM features...")
 missing_features = [f for f in lstm_feature_names if f not in final_features]
 if missing_features:
-    print(f"WARNING: Missing features from final_features: {missing_features}")
+    print(f"WARNING: Missing features: {missing_features}")
     print(f"Using available features from the final_features list instead...")
     # Use first 5 available features as fallback
     lstm_feature_names = final_features[:5]
-
-# Double-check that features actually exist in the dataframe
-available_features = [f for f in lstm_feature_names if f in SW_df.columns]
-if len(available_features) != len(lstm_feature_names):
-    missing_from_df = [f for f in lstm_feature_names if f not in SW_df.columns]
-    print(f"WARNING: Some features missing from dataframe: {missing_from_df}")
-    lstm_feature_names = available_features
     
-print(f"LSTM additional features ({len(lstm_feature_names)}): {lstm_feature_names}")
+print(f"LSTM additional features: {lstm_feature_names}")
 
 # Extract LSTM features for training
 print(f"\nExtracting LSTM features for training...")
 features_train = extract_lstm_features(train_sids, SW_df, final_features, lstm_feature_names)
 
-# Calculate actual input size dynamically
-num_additional_features = len(lstm_feature_names)
-num_probabilities = num_classes  # 5 probabilities from LightGBM
-lstm_input_size = num_probabilities + num_additional_features
-
-# Create LSTM dataloader for training
+# Create LSTM dataloader for training (5 probabilities + 5 features = 10 inputs)
 print(f"Creating LSTM dataloader...")
 lstm_dataloader_train = LSTM_dataloader_multiclass(
     prob_ls_train, features_train, len_train, true_ls_train, batch_size=32
 )
 
 # Train LSTM
-print(f"\nTraining multiclass LSTM ({num_classes} classes)...")
-print(f"Input: {num_probabilities} LightGBM probabilities + {num_additional_features} additional features = {lstm_input_size} features per timestep")
+print(f"\nTraining multiclass LSTM (5 classes)...")
+print(f"Input: 5 LightGBM probabilities + 5 additional features = 10 features per timestep")
 print(f"Using same aggressive class weights as LightGBM")
 lstm_model = LSTM_engine_multiclass(
     lstm_dataloader_train, 
@@ -380,7 +357,6 @@ lstm_model = LSTM_engine_multiclass(
     hidden_layer_size=64,  # Increased capacity for multiclass
     learning_rate=0.001,
     num_classes=num_classes,
-    input_size=lstm_input_size,  # Pass the actual input size
     class_weight=class_weights,  # Critical: forces LSTM to learn minority classes (R, N1, N3)
     use_focal_loss=False
 )
@@ -499,9 +475,9 @@ print(f"  - metrics_summary.csv")
 print(f"  - multiclass_shap_bar_<class>.png (one per class: W, R, N1, N2+N3)")
 print(f"  - log.txt (complete output with all metrics)")
 print(f"\nModel Settings:")
-print(f"  - Loss function: Cross-Entropy with class weights")
+print(f"  - Loss function: Cross-Entropy with class weights (scaling=1.0)")
 print(f"  - Classes: 4 (W, R, N1, N2+N3)")
-print(f"  - Regularization: MODERATE (reg_alpha 5-50, reg_lambda 0.5-3.0)")
-print(f"  - Data: SMOTE 50% oversampling (reduced to prevent overfitting)")
+print(f"  - Regularization: REDUCED (reg_alpha 0-20, reg_lambda 0.01-1.0)")
+print(f"  - Data: SMOTE resampling for balanced training")
 print(f"  - Note: N2 and N3 merged into N2+N3 to reduce class imbalance")
 print(f"{'='*80}")
