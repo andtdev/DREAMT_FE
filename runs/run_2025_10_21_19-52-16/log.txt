@@ -1,0 +1,274 @@
+Logging to: runs/run_2025_10_21_19-52-16/log.txt
+Run folder created: runs/run_2025_10_21_19-52-16
+Code files saved to: runs/run_2025_10_21_19-52-16/code
+
+Loading data for multiclass classification...
+Data loaded: (82671, 610)
+Number of features: 597
+Sleep stage distribution:
+Sleep_Stage
+W     34205
+N2    32382
+R      7047
+N1     6794
+N3     2243
+Name: count, dtype: int64
+
+Class mapping: {'W': 0, 'R': 1, 'N1': 2, 'N2': 3, 'N3': 3}
+Training 4-class classifier: ['W', 'R', 'N1', 'N2+N3']
+Note: N2+N3 class combines both original N2 and N3 stages
+
+================================================================================
+Multiclass Sleep Stage Classification
+================================================================================
+
+Train data class distribution:
+  W: 24620
+  R: 4666
+  N1: 4320
+  N2+N3: 24077
+
+Validation data class distribution:
+  W: 3038
+  R: 707
+  N1: 1079
+  N2+N3: 3215
+
+Test data class distribution:
+  W: 6547
+  R: 1674
+  N1: 1395
+  N2+N3: 7333
+
+Calculating AGGRESSIVE class weights for cost-sensitive learning...
+Aggressive class weights (higher = more penalty for misclassification):
+  W: 0.586 (base: 0.586, boost: 1.0x, n=24620)
+  R: 6.181 (base: 3.091, boost: 2.0x, n=4666)
+  N1: 6.676 (base: 3.338, boost: 2.0x, n=4320)
+  N2+N3: 0.599 (base: 0.599, boost: 1.0x, n=24077)
+
+Skipping SMOTE - using class weights only to prevent synthetic sample issues...
+Rationale: SMOTE-generated synthetic samples may not capture true physiological patterns,
+especially for REM sleep which requires specific eye movement and muscle tone characteristics.
+Resampled train data class distribution:
+  W: 24620
+  R: 4666
+  N1: 4320
+  N2+N3: 24077
+
+Training LightGBM multiclass model with AGGRESSIVE class weights...
+Using class weights to heavily penalize minority class misclassifications...
+Combined with reduced regularization to allow better fitting of minority classes...
+  0%|          | 0/50 [00:00<?, ?trial/s, best loss=?]  2%|2         | 1/50 [00:08<06:50,  8.37s/trial, best loss: -0.5765795015085241]  4%|4         | 2/50 [00:12<04:53,  6.12s/trial, best loss: -0.5765795015085241]  6%|6         | 3/50 [00:25<07:00,  8.94s/trial, best loss: -0.5765795015085241]  8%|8         | 4/50 [00:34<06:54,  9.00s/trial, best loss: -0.580364382749055]  10%|#         | 5/50 [00:43<06:41,  8.93s/trial, best loss: -0.580364382749055] 12%|#2        | 6/50 [00:49<05:50,  7.96s/trial, best loss: -0.580364382749055] 14%|#4        | 7/50 [01:06<07:47, 10.87s/trial, best loss: -0.589888886125629] 16%|#6        | 8/50 [01:19<08:16, 11.83s/trial, best loss: -0.589888886125629] 18%|#8        | 9/50 [01:44<10:50, 15.87s/trial, best loss: -0.589888886125629] 20%|##        | 10/50 [01:55<09:34, 14.37s/trial, best loss: -0.589888886125629] 22%|##2       | 11/50 [02:05<08:30, 13.08s/trial, best loss: -0.589888886125629] 24%|##4       | 12/50 [02:11<06:51, 10.84s/trial, best loss: -0.589888886125629] 26%|##6       | 13/50 [02:17<05:45,  9.35s/trial, best loss: -0.589888886125629] 28%|##8       | 14/50 [02:25<05:23,  8.99s/trial, best loss: -0.589888886125629] 30%|###       | 15/50 [02:43<06:50, 11.72s/trial, best loss: -0.589888886125629] 32%|###2      | 16/50 [03:01<07:36, 13.42s/trial, best loss: -0.5946102575538816] 34%|###4      | 17/50 [03:10<06:39, 12.11s/trial, best loss: -0.5946102575538816] 36%|###6      | 18/50 [03:29<07:40, 14.39s/trial, best loss: -0.5946102575538816] 38%|###8      | 19/50 [03:36<06:11, 12.00s/trial, best loss: -0.5946102575538816] 40%|####      | 20/50 [03:44<05:24, 10.80s/trial, best loss: -0.5946102575538816] 42%|####2     | 21/50 [03:48<04:17,  8.86s/trial, best loss: -0.5946102575538816] 44%|####4     | 22/50 [04:09<05:51, 12.56s/trial, best loss: -0.5946102575538816] 46%|####6     | 23/50 [04:23<05:52, 13.05s/trial, best loss: -0.5946102575538816] 48%|####8     | 24/50 [04:44<06:38, 15.31s/trial, best loss: -0.5946102575538816] 50%|#####     | 25/50 [04:59<06:18, 15.12s/trial, best loss: -0.5946102575538816] 52%|#####2    | 26/50 [05:12<05:46, 14.43s/trial, best loss: -0.5946102575538816] 54%|#####4    | 27/50 [05:18<04:34, 11.92s/trial, best loss: -0.5946102575538816] 56%|#####6    | 28/50 [05:39<05:26, 14.86s/trial, best loss: -0.5975350947739151] 58%|#####8    | 29/50 [06:01<05:53, 16.85s/trial, best loss: -0.5975350947739151] 60%|######    | 30/50 [06:08<04:41, 14.06s/trial, best loss: -0.5975350947739151] 62%|######2   | 31/50 [06:26<04:44, 14.99s/trial, best loss: -0.5975350947739151] 64%|######4   | 32/50 [06:30<03:32, 11.83s/trial, best loss: -0.5975350947739151] 66%|######6   | 33/50 [06:43<03:25, 12.07s/trial, best loss: -0.5975350947739151] 68%|######8   | 34/50 [07:08<04:15, 15.99s/trial, best loss: -0.5979982427333315] 70%|#######   | 35/50 [07:18<03:32, 14.20s/trial, best loss: -0.5979982427333315] 72%|#######2  | 36/50 [07:36<03:35, 15.38s/trial, best loss: -0.5979982427333315] 74%|#######4  | 37/50 [07:59<03:51, 17.81s/trial, best loss: -0.5979982427333315] 76%|#######6  | 38/50 [08:16<03:29, 17.49s/trial, best loss: -0.5979982427333315] 78%|#######8  | 39/50 [08:33<03:11, 17.41s/trial, best loss: -0.5979982427333315] 80%|########  | 40/50 [08:58<03:14, 19.47s/trial, best loss: -0.5979982427333315] 82%|########2 | 41/50 [09:05<02:22, 15.89s/trial, best loss: -0.5979982427333315] 84%|########4 | 42/50 [09:25<02:15, 16.96s/trial, best loss: -0.5979982427333315] 86%|########6 | 43/50 [09:34<01:43, 14.80s/trial, best loss: -0.5979982427333315] 88%|########8 | 44/50 [09:43<01:17, 12.93s/trial, best loss: -0.5979982427333315] 90%|######### | 45/50 [09:51<00:57, 11.43s/trial, best loss: -0.5979982427333315] 92%|#########2| 46/50 [10:13<00:58, 14.71s/trial, best loss: -0.5988874500388578] 94%|#########3| 47/50 [10:30<00:46, 15.45s/trial, best loss: -0.5988874500388578] 96%|#########6| 48/50 [10:49<00:32, 16.35s/trial, best loss: -0.5988874500388578] 98%|#########8| 49/50 [11:02<00:15, 15.44s/trial, best loss: -0.5988874500388578]100%|##########| 50/50 [11:17<00:00, 15.26s/trial, best loss: -0.5988874500388578]100%|##########| 50/50 [11:17<00:00, 13.55s/trial, best loss: -0.5988874500388578]
+Best hyperparameters: {'learning_rate': 0.07236016672415863, 'max_depth': 6.0, 'n_estimators': 270.0, 'num_leaves': 40.0, 'reg_alpha': 7.0, 'reg_lambda': 0.5982874269305796}
+Found `num_iterations` in params. Will use it instead of argument
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.033845 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 87830
+[LightGBM] [Info] Number of data points in the train set: 57683, number of used features: 358
+[LightGBM] [Info] Start training from score -1.791760
+[LightGBM] [Info] Start training from score -1.098612
+[LightGBM] [Info] Start training from score -1.098612
+[LightGBM] [Info] Start training from score -1.791759
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+✓ Model saved: runs/run_2025_10_21_19-52-16/output/LightGBM_multiclass_model.pkl
+
+Evaluating on training data...
+[[17707  1166  5201   546]
+ [    4  4546   100    16]
+ [   64   285  3884    87]
+ [  483  3056  7376 13162]]
+✓ Training CM saved: runs/run_2025_10_21_19-52-16/output/multiclass_train_CM.png
+
+================================================================================
+TRAINING SET Metrics Report
+================================================================================
+
+Overall Metrics:
+  Accuracy:        0.6813
+  F1 (Macro):      0.6389
+  F1 (Weighted):   0.7240
+  AUROC (Macro):   0.9525
+  AUROC (Weighted):0.9512
+  AUPRC (Macro):   0.8243
+  AUPRC (Weighted):0.9049
+
+Per-Class Metrics:
+Class      F1         AUROC      AUPRC     
+----------------------------------------
+W          0.8259     0.9598     0.9556    
+R          0.6627     0.9885     0.8956    
+N1         0.3720     0.9211     0.5224    
+N2+N3      0.6948     0.9406     0.9235    
+================================================================================
+
+Evaluating on test data...
+[[4787  348 1160  252]
+ [  49  779  419  427]
+ [ 219  200  761  215]
+ [ 348 1128 2221 3636]]
+✓ Testing CM saved: runs/run_2025_10_21_19-52-16/output/multiclass_test_CM.png
+
+================================================================================
+TEST SET Metrics Report
+================================================================================
+
+Overall Metrics:
+  Accuracy:        0.5878
+  F1 (Macro):      0.5118
+  F1 (Weighted):   0.6330
+  AUROC (Macro):   0.8228
+  AUROC (Weighted):0.8612
+  AUPRC (Macro):   0.5444
+  AUPRC (Weighted):0.7343
+
+Per-Class Metrics:
+Class      F1         AUROC      AUPRC     
+----------------------------------------
+W          0.8012     0.9280     0.9117    
+R          0.3773     0.8012     0.3190    
+N1         0.2555     0.7200     0.1685    
+N2+N3      0.6130     0.8421     0.7784    
+================================================================================
+✓ Metrics summary saved: runs/run_2025_10_21_19-52-16/output/metrics_summary.csv
+
+================================================================================
+MULTICLASS LSTM POST-PROCESSING
+================================================================================
+Adding temporal modeling to improve sequence predictions...
+
+Verifying LSTM features...
+WARNING: Missing features from final_features: ['max_SCR_Rise_Time']
+Using available features from the final_features list instead...
+LSTM additional features (5): ['PPG_Rate_Mean', 'HRV_SDNN', 'HRV_MadNN', 'HRV_SDRMSSD', 'HRV_Prc20NN']
+
+Extracting LSTM features for training...
+Creating LSTM dataloader...
+
+Training multiclass LSTM (4 classes)...
+Input: 4 LightGBM probabilities + 5 additional features = 9 features per timestep
+Using same aggressive class weights as LightGBM
+Training multiclass LSTM on cpu
+dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.5 and num_layers=1
+Using class weights: [0.5857331 6.1812043 6.6762733 0.598943 ]
+Using Weighted Cross-Entropy Loss for LSTM training
+Epoch 10/300 - Loss: 1.2953, Accuracy: 0.0829
+Epoch 20/300 - Loss: 1.2644, Accuracy: 0.1828
+Epoch 30/300 - Loss: 1.2409, Accuracy: 0.2779
+Epoch 40/300 - Loss: 1.2038, Accuracy: 0.3445
+Epoch 50/300 - Loss: 1.1670, Accuracy: 0.3765
+Epoch 60/300 - Loss: 1.1216, Accuracy: 0.4151
+Epoch 70/300 - Loss: 1.0828, Accuracy: 0.4231
+Epoch 80/300 - Loss: 1.0343, Accuracy: 0.4585
+Epoch 90/300 - Loss: 0.9931, Accuracy: 0.4795
+Epoch 100/300 - Loss: 0.9413, Accuracy: 0.4972
+Epoch 110/300 - Loss: 0.8928, Accuracy: 0.5121
+Epoch 120/300 - Loss: 0.8423, Accuracy: 0.5238
+Epoch 130/300 - Loss: 0.8347, Accuracy: 0.5229
+Epoch 140/300 - Loss: 0.7823, Accuracy: 0.5432
+Epoch 150/300 - Loss: 0.7251, Accuracy: 0.5746
+Epoch 160/300 - Loss: 0.7043, Accuracy: 0.5845
+Epoch 170/300 - Loss: 0.6647, Accuracy: 0.6185
+Epoch 180/300 - Loss: 0.6547, Accuracy: 0.6409
+Epoch 190/300 - Loss: 0.6243, Accuracy: 0.6523
+Epoch 200/300 - Loss: 0.6008, Accuracy: 0.6691
+Epoch 210/300 - Loss: 0.6048, Accuracy: 0.6669
+Epoch 220/300 - Loss: 0.5567, Accuracy: 0.6970
+Epoch 230/300 - Loss: 0.5578, Accuracy: 0.7038
+Epoch 240/300 - Loss: 0.5308, Accuracy: 0.7321
+Epoch 250/300 - Loss: 0.5194, Accuracy: 0.7368
+Epoch 260/300 - Loss: 0.5029, Accuracy: 0.7349
+Epoch 270/300 - Loss: 0.4967, Accuracy: 0.7426
+Epoch 280/300 - Loss: 0.4838, Accuracy: 0.7560
+Epoch 290/300 - Loss: 0.4725, Accuracy: 0.7530
+Epoch 300/300 - Loss: 0.4618, Accuracy: 0.7562
+✓ LSTM model saved: runs/run_2025_10_21_19-52-16/output/LSTM_multiclass_model.pth
+
+Evaluating LSTM on test data...
+
+LSTM Test - Average Cohen's Kappa: 0.4859
+[[5104   88 1051  304]
+ [   3  513  445  713]
+ [ 179   93  795  328]
+ [ 235  330 2069 4699]]
+✓ LSTM Testing CM saved: runs/run_2025_10_21_19-52-16/output/multiclass_LSTM_test_CM.png
+
+================================================================================
+LSTM POST-PROCESSED TEST SET Metrics Report
+================================================================================
+
+Overall Metrics:
+  Accuracy:        0.6556
+  F1 (Macro):      0.5512
+  F1 (Weighted):   0.6910
+  AUROC (Macro):   0.8453
+  AUROC (Weighted):0.8842
+  AUPRC (Macro):   0.5783
+  AUPRC (Weighted):0.7644
+
+Per-Class Metrics:
+Class      F1         AUROC      AUPRC     
+----------------------------------------
+W          0.8459     0.9517     0.9431    
+R          0.3803     0.8054     0.3824    
+N1         0.2763     0.7581     0.1859    
+N2+N3      0.7025     0.8659     0.8020    
+================================================================================
+
+================================================================================
+COMPARISON: LightGBM vs LightGBM+LSTM
+================================================================================
+        Model  Accuracy  F1_Macro  F1_Weighted  AUROC_Macro
+     LightGBM  0.587822  0.511760     0.632988     0.822820
+LightGBM+LSTM  0.655555  0.551246     0.690998     0.845261
+  Improvement  0.067733  0.039486     0.058010     0.022442
+
+✓ Comparison saved: runs/run_2025_10_21_19-52-16/output/lgb_vs_lstm_comparison.csv
+
+Per-Class F1 Score Comparison:
+Class      LightGBM     LightGBM+LSTM   Improvement 
+--------------------------------------------------
+W          0.8012       0.8459          +0.0447
+R          0.3773       0.3803          +0.0030
+N1         0.2555       0.2763          +0.0207
+N2+N3      0.6130       0.7025          +0.0896
+================================================================================
+
+
+Computing SHAP values...
+✓ SHAP bar plot for W saved: runs/run_2025_10_21_19-52-16/output/multiclass_shap_bar_W.png
+✓ SHAP bar plot for R saved: runs/run_2025_10_21_19-52-16/output/multiclass_shap_bar_R.png
+✓ SHAP bar plot for N1 saved: runs/run_2025_10_21_19-52-16/output/multiclass_shap_bar_N1.png
+✓ SHAP bar plot for N2+N3 saved: runs/run_2025_10_21_19-52-16/output/multiclass_shap_bar_N2+N3.png
+
+================================================================================
+MULTICLASS CLASSIFICATION COMPLETE!
+================================================================================
+All outputs saved to: runs/run_2025_10_21_19-52-16
+  - Code snapshots: runs/run_2025_10_21_19-52-16/code/
+  - Results: runs/run_2025_10_21_19-52-16/output/
+  - Complete log: runs/run_2025_10_21_19-52-16/log.txt
+
+Generated files:
+  - LightGBM_multiclass_model.pkl
+  - multiclass_train_CM.png
+  - multiclass_test_CM.png
+  - metrics_summary.csv
+  - multiclass_shap_bar_<class>.png (one per class: W, R, N1, N2+N3)
+  - log.txt (complete output with all metrics)
+
+Model Settings:
+  - Loss function: Cross-Entropy with class weights
+  - Classes: 4 (W, R, N1, N2+N3)
+  - Class weight scaling: 2x for R and N1 (reduced from 4x)
+  - Regularization: LOW (reg_alpha 0-10, reg_lambda 0.1-1.0)
+  - Data: NO SMOTE (using original data only)
+  - Note: N2 and N3 merged into N2+N3 to reduce class imbalance
+================================================================================
